@@ -2,24 +2,38 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../../utils/constant'
 
-import { addPost, deletePost, getPostList, updatePost } from './action'
+import { addPost, deletePost, getHomeList, getPostList, updatePost } from './action'
 
 
 const initialState = {
   requestStatus: REQUEST_STATUS.BASE_IDDLE,
-  [STATE_NAME.POST_LIST]: {}
+  [STATE_NAME.POST_LIST]: {},
+  [STATE_NAME.HOME_LIST]: {}
 }
 
 const postSlice = createSlice({
   name: STORE_NAME.POST,
   initialState,
   reducers: {
+    getHomeList,
     getPostList,
     addPost,
     updatePost,
     deletePost
   },
   extraReducers: (builder) => {
+    // home list
+    builder.addCase(getHomeList.fulfilled, (state, action) => {
+      state[STATE_NAME.HOME_LIST] = action.payload[STATE_NAME.HOME_LIST] || {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_SUCCESS
+    }),
+    builder.addCase(getHomeList.pending, (state) => {
+      state.requestStatus = REQUEST_STATUS.POST_LIST_PENDING
+    }),
+    builder.addCase(getHomeList.rejected, (state) => {
+      state[STATE_NAME.HOME_LIST] = {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_FAILED
+    }),
     // post list
     builder.addCase(getPostList.fulfilled, (state, action) => {
       const { page } = action.payload[STATE_NAME.POST_LIST]

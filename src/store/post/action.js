@@ -5,6 +5,20 @@ import { STATE_NAME } from '../../utils/constant'
 
 import { addPostService, deletePostService, getPostListService, updatePostService } from '../../services/post'
 
+export const getHomeList = createAsyncThunk(
+  'post/list-for-home',
+  async (listParams, thunkAPI) => {
+    return (
+      await creatorListOrDetailAction(
+        thunkAPI,
+        listParams,
+        getPostListService,
+        STATE_NAME.HOME_LIST,
+      )
+    )
+  }
+)
+
 export const getPostList = createAsyncThunk(
   'post/list',
   async (listParams, thunkAPI) => {
