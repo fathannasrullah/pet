@@ -1,6 +1,6 @@
-import { setMessage } from './slice'
+import { TYPE_MESSAGES, VARIANT_MESSAGES, messageConstants } from '../../utils/constant'
 
-import { messageConstants, TYPE_MESSAGES, VARIANT_MESSAGES } from '../../utils/constants/message.constant'
+import { setMessage } from './slice'
 
 const getMessageFromResponseData = (responseData) => {
   const { CONTAINER_MESSAGE, TRANSLATION_MESSAGE } = messageConstants
