@@ -1,5 +1,5 @@
 /* API Url */
-export const SKUY_GASKEUN_API_URL = 'https://dummyapi.io/data/v1/'
+export const SKUY_GASKEUN_API_URL = 'https://dummyapi.io/data/v1'
 export const SKUY_GASKEUN_API_URL_USER = `${SKUY_GASKEUN_API_URL}/user`
 export const SKUY_GASKEUN_API_URL_USER_CREATE = `${SKUY_GASKEUN_API_URL_USER}/create`
 export const SKUY_GASKEUN_API_URL_POST = `${SKUY_GASKEUN_API_URL}/post`
