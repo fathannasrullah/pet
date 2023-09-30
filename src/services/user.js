@@ -10,7 +10,7 @@ export const getUserListService = async (listParams) => {
   )
 }
 
-export const createUserService = async (addBody) => {
+export const addUserService = async (addBody) => {
   return (
     await creatorAddService(
       SKUY_GASKEUN_API_URL_USER_CREATE,
