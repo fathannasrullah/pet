@@ -12,7 +12,6 @@ export const APP_ID = '62996cb2689bf0731cb00285'
 export const STORE_NAME = {
   USER: 'user',
   POST: 'post',
-  HOME: 'home',
   MESSAGE: 'message'
 }
 
