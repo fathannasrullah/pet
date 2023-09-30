@@ -45,7 +45,7 @@ export const REQUEST_STATUS = {
   USER_DELETE_SUCCESS: 'user-delete-success',
   USER_DELETE_FAILED: 'user-delete-failed',
   /* Post List */
-  POST_LIST_PENDDING: 'post-list-pendding',
+  POST_LIST_PENDING: 'post-list-pendding',
   POST_LIST_SUCCESS: 'post-list-success',
   POST_LIST_FAILED: 'post-list-failed',
   /* Post Create */
