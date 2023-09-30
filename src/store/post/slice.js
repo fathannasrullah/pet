@@ -43,20 +43,20 @@ const postSlice = createSlice({
     builder.addCase(addPost.fulfilled, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_CREATE_SUCCESS
     }),
-    builder.addCase(addSalesOrder.pending, (state) => {
+    builder.addCase(addPost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_CREATE_PENDING
     }),
-    builder.addCase(addSalesOrder.rejected, ( state ) => {
+    builder.addCase(addPost.rejected, ( state ) => {
       state.requestStatus = REQUEST_STATUS.POST_CREATE_FAILED
     }),
     // update post
     builder.addCase(updatePost.fulfilled, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_UPDATE_SUCCESS
     }),
-    builder.addCase(addSalesOrder.pending, (state) => {
+    builder.addCase(updatePost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_UPDATE_PENDING
     }),
-    builder.addCase(addSalesOrder.rejected, ( state ) => {
+    builder.addCase(updatePost.rejected, ( state ) => {
       state.requestStatus = REQUEST_STATUS.POST_UPDATE_FAILED
     }),
     // delete post
