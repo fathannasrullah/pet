@@ -4,18 +4,23 @@ export const SKUY_GASKEUN_API_URL_USER = `${SKUY_GASKEUN_API_URL}/user`
 export const SKUY_GASKEUN_API_URL_USER_CREATE = `${SKUY_GASKEUN_API_URL_USER}/create`
 export const SKUY_GASKEUN_API_URL_POST = `${SKUY_GASKEUN_API_URL}/post`
 export const SKUY_GASKEUN_API_URL_POST_CREATE = `${SKUY_GASKEUN_API_URL_POST}/create`
+
 /* Headers */
 export const APP_ID = '62996cb2689bf0731cb00285'
+
 /* Store Name */
 export const STORE_NAME = {
   USER: 'user',
   POST: 'post',
+  MESSAGE: 'message'
 }
+
 /* Global State Name */
 export const STATE_NAME = {
   USER_LIST: 'userListState',
   POST_LIST: 'postListState'
 }
+
 /* Request Status */
 export const REQUEST_STATUS = {
   /* Base */
@@ -56,4 +61,23 @@ export const REQUEST_STATUS = {
   POST_DELETE_SUCCESS: 'post-delete-success',
   POST_DELETE_FAILED: 'post-delete-failed',
   
+}
+
+/* All Message */
+export const messageConstants = {
+  'CONTAINER_MESSAGE': 'userMessage',
+  'TRANSLATION_MESSAGE': [
+    'ID', 'EN'
+  ]
+}
+
+export const VARIANT_MESSAGES = {
+  ERROR: 'error',
+  FORBIDDEN: 'forbidden',
+  SUCCESS: 'success',
+}
+
+export const TYPE_MESSAGES = {
+  DIALOG: 'dialog',
+  SNACKBAR: 'snackbar',
 }
