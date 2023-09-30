@@ -10,7 +10,7 @@ export const getPostListService = async (listParams) => {
   )
 }
 
-export const createPostService = async (addBody) => {
+export const addPostService = async (addBody) => {
   return (
     await creatorAddService(
       SKUY_GASKEUN_API_URL_POST_CREATE,
@@ -31,7 +31,7 @@ export const updatePostService = async (updateBody) => {
   )
 }
 
-export const deletePost = async (deleteParams) => {
+export const deletePostService = async (deleteParams) => {
   const { id } = deleteParams
 
   return await (
