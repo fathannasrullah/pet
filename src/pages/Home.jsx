@@ -97,10 +97,6 @@ function Home() {
     handleFetchList()
   }, [handleFetchList])
 
-  console.log('fetch type:' + fetchType)
-  console.log('liistState :' + listState)
-  console.log('searchValue :' + searchValue)
-
   return (
     <main>
       <Grid spacing={1} container>
