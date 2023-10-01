@@ -11,6 +11,7 @@ import { STATE_NAME, STORE_NAME } from '../utils/constant'
 import { getHomeList } from '../store/post/action'
 
 import { createSearchParams, useLocation, useNavigate, useParams } from 'react-router-dom'
+import Search from '../components/Search/Search'
 
 const useNavigateParams = () => {
   const navigate = useNavigate()
@@ -34,12 +35,34 @@ function Home() {
   const location = useLocation()
   const query = new URLSearchParams(location.search)
 
-  const [page, setPage] = useState(parseInt(query.get('page') || '1'))
   const [fetchType, setFetchType] = useState('initial')
-  
+  const [page, setPage] = useState(parseInt(query.get('page') || '1'))
+  const [searchValue, setSearchValue] = useState('')
+  const [searchTimeout, setSearchTimeout] = useState(null)
+ 
   const handleFetchDataType = (type) => {
     setFetchType(type)
   }
+
+  const handleSearchChange = (event, emptyValue) => {
+    clearTimeout(searchTimeout)
+    
+    setSearchValue(
+      typeof emptyValue === 'string'
+        ? emptyValue
+        : event.target.value
+    )
+
+    // debounce method
+    setSearchTimeout(
+      setTimeout(() => {
+        setPage(0)
+
+        handleFetchDataType('search')
+      }, 500)
+    )
+  }
+
 
   const handlePageChange = (event, value) => {
     event.preventDefault()
@@ -77,7 +100,10 @@ function Home() {
     <main>
       <Grid spacing={1} container>
         <Grid item xs={12}>
-          <p>search component</p>
+          <Search
+            searchValue={searchValue}
+            onSearchChange={handleSearchChange}
+          />
         </Grid>
         <Grid item xs={12} spacing={2} container>
           {list.map(({
