@@ -28,7 +28,7 @@ function AppBar() {
             <MenuIcon />
           </StyledIconButton>
           
-          <Grid container justifyContent='center'><Button>SKUY GASKEUN</Button></Grid>
+          <Grid container justifyContent='center'><Button></Button></Grid>
         </Toolbar>
       </StyledAppBar>
       <Navigation
