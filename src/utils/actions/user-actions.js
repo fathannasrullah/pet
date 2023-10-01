@@ -2,11 +2,11 @@ import { Delete, Edit } from "@mui/icons-material";
 
 export const userAction = [
   {
-    label: 'Edit',
-    Icon: Delete
+    label: 'edit',
+    Icon: Edit
   },
   {
-    label: 'Delete',
-    Icon: Edit
-  }
+    label: 'delete',
+    Icon: Delete
+  },
 ]
