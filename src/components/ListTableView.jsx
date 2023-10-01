@@ -36,7 +36,11 @@ function ListTableView({
 
   const listIsLoading = requestStatus === listStatusLoading
 
-  const { [responseKeyName]: list = [], total } = listState
+  const {
+    [responseKeyName]: list = [],
+    page: currPage,
+    total
+  } = listState
 
   const rowsPerPage = 10
 
@@ -72,12 +76,12 @@ function ListTableView({
 
   const handlePageChange = (event, newPage) => {
     event.preventDefault()
-
+    
     const totalData = total
-    const numberOfList = list.length
-    const numberOfRow = rowsPerPage * (newPage+1)
+    const listAmount = list.length
+    const rowAmount = rowsPerPage * (newPage+1)
 
-    if (numberOfRow === numberOfList && numberOfRow !== totalData) handleNextPage()
+    if (rowAmount === listAmount && rowAmount !== totalData) handleNextPage()
     
     setPage(newPage)
   }
@@ -104,13 +108,14 @@ function ListTableView({
 
   const handleFetchList = useCallback(() => {
     let param = {
-      limit: 30
+      limit: 30,
+      page: 1
     }
-
+    console.log('page :' + page)
     if (fetchType.name === 'next-page') {
       param = {
         ...param,
-        skip: list.length
+        page: currPage + 1
       }
     }
 
@@ -130,6 +135,7 @@ function ListTableView({
   const filterFunction = FILTERS[filter.filterKey]
   const filteredList = filterFunction(list)
 
+  console.log('currPage :' + page)
   return (
     <Grid spacing={2} container>
       <Grid item xs={12} justifyContent='center' container>

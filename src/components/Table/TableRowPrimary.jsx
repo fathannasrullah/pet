@@ -22,6 +22,7 @@ function TableRowPrimary({
       {columns.map(({ name, align }, index) => {
         let value = row[name]
         
+        if (name === 'firstName') value = `${row.firstName} ${row.lastName}`
         if (name === 'owner') value = `${value.firstName} ${value.lastName}`
         if (name === 'image' || name === 'picture') {
           value = (

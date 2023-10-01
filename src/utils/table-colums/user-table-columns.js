@@ -12,6 +12,7 @@ export const userTableColumns = [
   {
     name: 'action',
     label: 'Action',
-    minWidth: 100 
+    minWidth: 190,
+    align: 'center'
   }
 ]

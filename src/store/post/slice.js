@@ -51,7 +51,7 @@ const postSlice = createSlice({
     builder.addCase(getPostList.fulfilled, (state, action) => {
       const { page } = action.payload[STATE_NAME.POST_LIST]
 
-      state[STATE_NAME.POST_LIST] = page === 0
+      state[STATE_NAME.POST_LIST] = page === 1
         ? action.payload[STATE_NAME.POST_LIST] || {}
         : {
             ...action.payload[STATE_NAME.POST_LIST],

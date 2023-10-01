@@ -24,7 +24,7 @@ const userSlice = createSlice({
     builder.addCase(getUserList.fulfilled, (state, action) => {
       const { page } = action.payload[STATE_NAME.USER_LIST]
 
-      state[STATE_NAME.USER_LIST] = page === 0
+      state[STATE_NAME.USER_LIST] = page === 1
         ? action.payload[STATE_NAME.USER_LIST] || {}
         : {
             ...action.payload[STATE_NAME.USER_LIST],
