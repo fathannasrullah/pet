@@ -35,8 +35,29 @@ export const creatorListService = async(endpoint, listParams) => {
 
 /**
  * @param { string } endpoint API endpoint url
+ * @param { string } value unique value for get data base on user typing
+ * @param { string } endURL end of endpoint url 
+ * @returns  
+ * async function for get list base on search
+ */
+export const creatorSearchService = async(endpoint, value, endURL) => {
+  if (!APP_ID) return null
+
+  const dinamicEndpoint = `${endpoint}/${value}/${endURL}`
+  
+  return await axios({
+    method: 'GET',
+    url: dinamicEndpoint,
+    headers: {
+      'app-id': APP_ID
+    }
+  })
+}
+
+/**
+ * @param { string } endpoint API endpoint url
  * @param { string } id unique id for get data base on id
- * @returns 
+ * @returns  
  * async function for get detail data
  */
 export const creatorDetailService = async(endpoint, ID) => {
