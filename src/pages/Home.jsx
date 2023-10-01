@@ -2,16 +2,17 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, PaginationItem, Stack, Typography } from '@mui/material'
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, Stack, Typography } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ShareIcon from '@mui/icons-material/Share'
 
 import { STATE_NAME, STORE_NAME } from '../utils/constant'
 
-import { getHomeList } from '../store/post/action'
+import { getHomeList, getSearchPostByTag } from '../store/post/action'
 
-import { createSearchParams, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import Search from '../components/Search/Search'
+import { isEmpty } from 'lodash'
 
 const useNavigateParams = () => {
   const navigate = useNavigate()
@@ -35,13 +36,16 @@ function Home() {
   const location = useLocation()
   const query = new URLSearchParams(location.search)
 
-  const [fetchType, setFetchType] = useState('initial')
+  const [fetchType, setFetchType] = useState({ name: 'initial' })
   const [page, setPage] = useState(parseInt(query.get('page') || '1'))
   const [searchValue, setSearchValue] = useState('')
   const [searchTimeout, setSearchTimeout] = useState(null)
  
   const handleFetchDataType = (type) => {
-    setFetchType(type)
+    setFetchType({
+      ...fetchType,
+      name: type
+    })
   }
 
   const handleSearchChange = (event, emptyValue) => {
@@ -63,7 +67,6 @@ function Home() {
     )
   }
 
-
   const handlePageChange = (event, value) => {
     event.preventDefault()
     setPage(value)
@@ -78,15 +81,17 @@ function Home() {
       limit: 20
     }
 
-    if ((fetchType === 'page-change' && page > 0) || (fetchType === 'initial' && page > 0)) {
+    if (fetchType.name === 'search') dispatch(getSearchPostByTag(searchValue))
+
+    if ((fetchType.name === 'page-change' && page > 0) || (fetchType.name === 'initial' && page > 0)) {
       dispatch(getHomeList({
         ...param,
         page: page
       }))
     }
 
-    if (fetchType === 'initial' && page == 1) dispatch(getHomeList({ ...param }))
-  }, [fetchType, page])
+    if ((fetchType.name === 'initial' && page == 1) || isEmpty(searchValue)) dispatch(getHomeList({ ...param }))
+  }, [fetchType, page, searchValue])
 
   useEffect(() => {
     handleFetchList()
@@ -94,7 +99,7 @@ function Home() {
 
   console.log('fetch type:' + fetchType)
   console.log('liistState :' + listState)
-  console.log('query' + query)
+  console.log('searchValue :' + searchValue)
 
   return (
     <main>
