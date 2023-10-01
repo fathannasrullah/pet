@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 
 import {
   List,
@@ -12,22 +13,21 @@ import { StyledDrawerPermanent, StyledDrawerTemporary, StyledListItemButton, Sty
 
 function Navigation({ handleDrawerToggle, mobileOpen }) {
   /*let selectedPath = ''
-  const router = ''
+  if (selectedPath.split('/').length > 2) selectedPath = selectedPath.split('/').slice(0, 2).join('/')*/
+  const navigate = useNavigate()
 
-  if (selectedPath.split('/').length > 2) selectedPath = selectedPath.split('/').slice(0, 2).join('/')
-  
-  const handleNavigateTo = async (path) => {
-    router.push(path)
+  const handleNavigateTo = (path) => {
+    navigate(path)
     mobileOpen == true && handleDrawerToggle()
-  }*/
+  }
   
   const drawer = (
     <List>
-      {navigation.map(({ name, Icon, Divider }, index) => (
+      {navigation.map(({ name, path, Icon, Divider }, index) => (
         <>
           <ListItem key={index} disablePadding>
             <StyledListItemButton
-              //onClick={() => handleNavigateTo(path)}
+              onClick={() => handleNavigateTo(path)}
               //selected={path === selectedPath}
             >
               <ListItemIcon>
