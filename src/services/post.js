@@ -1,5 +1,15 @@
-import { creatorAddService, creatorDeleteService, creatorListService, creatorUpdateService } from '../utils/helpers/creator-service-helper'
-import { SKUY_GASKEUN_API_URL_POST, SKUY_GASKEUN_API_URL_POST_CREATE } from '../utils/constant'
+import { creatorAddService, creatorDeleteService, creatorListService, creatorSearchService, creatorUpdateService } from '../utils/helpers/creator-service-helper'
+import { SKUY_GASKEUN_API_URL_POST, SKUY_GASKEUN_API_URL_POST_CREATE, SKUY_GASKEUN_API_URL_POST_SEARCH_BY_TAG } from '../utils/constant'
+
+export const getSearchPostByTagService = async(tagValue) => {
+  return (
+    await creatorSearchService(
+      SKUY_GASKEUN_API_URL_POST_SEARCH_BY_TAG,
+      tagValue,
+      'post'
+    )
+  )
+}
 
 export const getPostListService = async (listParams) => {
   return (
