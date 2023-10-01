@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../../utils/constant'
 
-import { addPost, deletePost, getHomeList, getPostList, updatePost } from './action'
+import { addPost, deletePost, getHomeList, getPostList, getSearchPostByTag, updatePost } from './action'
 
 
 const initialState = {
@@ -16,6 +16,7 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     getHomeList,
+    getSearchPostByTag,
     getPostList,
     addPost,
     updatePost,
@@ -31,6 +32,18 @@ const postSlice = createSlice({
       state.requestStatus = REQUEST_STATUS.POST_LIST_PENDING
     }),
     builder.addCase(getHomeList.rejected, (state) => {
+      state[STATE_NAME.HOME_LIST] = {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_FAILED
+    }),
+    // search post by tag
+    builder.addCase(getSearchPostByTag.fulfilled, (state, action) => {
+      state[STATE_NAME.HOME_LIST] = action.payload[STATE_NAME.HOME_LIST] || {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_SUCCESS
+    }),
+    builder.addCase(getSearchPostByTag.pending, (state) => {
+      state.requestStatus = REQUEST_STATUS.POST_LIST_PENDING
+    }),
+    builder.addCase(getSearchPostByTag.rejected, (state) => {
       state[STATE_NAME.HOME_LIST] = {}
       state.requestStatus = REQUEST_STATUS.POST_LIST_FAILED
     }),

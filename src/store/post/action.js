@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { creatorAddAction, creatorDeleteAction, creatorListOrDetailAction, creatorUpdateAction } from '../../utils/helpers/creator-action-helper'
 import { STATE_NAME } from '../../utils/constant'
 
-import { addPostService, deletePostService, getPostListService, updatePostService } from '../../services/post'
+import { addPostService, deletePostService, getPostListService, getSearchPostByTagService, updatePostService } from '../../services/post'
 
 export const getHomeList = createAsyncThunk(
   'post/list-for-home',
@@ -13,6 +13,20 @@ export const getHomeList = createAsyncThunk(
         thunkAPI,
         listParams,
         getPostListService,
+        STATE_NAME.HOME_LIST,
+      )
+    )
+  }
+)
+
+export const getSearchPostByTag = createAsyncThunk(
+  'post/search-by-tag',
+  async (searchParam, thunkAPI) => {
+    return (
+      await creatorListOrDetailAction(
+        thunkAPI,
+        searchParam,
+        getSearchPostByTagService,
         STATE_NAME.HOME_LIST,
       )
     )
