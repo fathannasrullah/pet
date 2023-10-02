@@ -21,7 +21,7 @@ function DeleteDataModal({
       onClose={handleClose}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>{`Are you sure want to delete ${selectedData.owner.firstName}'s ${source}?`}</DialogTitle>
+      <DialogTitle>{`Are you sure want to delete ${selectedData}'s ${source}?`}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           

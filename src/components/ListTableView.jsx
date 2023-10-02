@@ -25,6 +25,7 @@ function ListTableView({
   onFetchRefreshList,
   onFetchSearch,
 
+  source,
   openDeleteModal,
   closeDeleteModal,
   selectedData,
@@ -181,6 +182,7 @@ function ListTableView({
 
     {openDeleteModal &&
       <DeleteDataModal
+        source={source}
         open={openDeleteModal}
         close={closeDeleteModal}
         selectedData={selectedData}

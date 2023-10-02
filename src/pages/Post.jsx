@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+
+import { isEmpty } from 'lodash'
 
 import { deletePost, getPostList, getRefreshPostList } from '../store/post/action'
 
@@ -39,7 +41,7 @@ function Post() {
         onFetchList={getPostList}
         onFetchRefreshList={getRefreshPostList}
 
-        selectedData={selectedData}
+        selectedData={!isEmpty(selectedData) && selectedData.owner.firstName}
         openDeleteModal={openDeletePost}
         handleGetDataSelected={handleGetDataSelected}
         handleOpenDeleteModal={handleOpenDeletePost}
