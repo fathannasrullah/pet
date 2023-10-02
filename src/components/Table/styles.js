@@ -34,7 +34,6 @@ export const StyledActionContainer = styled(Stack)(() => ({
 
 export const StyledButton= styled(Button)(() => ({
   fontSize: '10px',
-  //padding: '2px 8px',
   justifyContent: 'space-between',
   borderRadius: '8px'
 }))
