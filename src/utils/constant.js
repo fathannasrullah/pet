@@ -35,31 +35,31 @@ export const REQUEST_STATUS = {
   USER_LIST_SUCCESS: 'user-list-success',
   USER_LIST_FAILED: 'user-list-failed',
   /* User Create */
-  USER_CREATE_PENDING: 'user-create-pendding',
+  USER_CREATE_PENDING: 'user-create-pending',
   USER_CREATE_SUCCESS: 'user-create-success',
   USER_CREATE_FAILED: 'user-create-failed',
   /* User Update */
-  USER_UPDATE_PENDING: 'user-update-pendding',
+  USER_UPDATE_PENDING: 'user-update-pending',
   USER_UPDATE_SUCCESS: 'user-update-success',
   USER_UPDATE_FAILED: 'user-update-failed',
   /* User Delete */
-  USER_DELETE_PENDING: 'user-delete-pendding',
+  USER_DELETE_PENDING: 'user-delete-pending',
   USER_DELETE_SUCCESS: 'user-delete-success',
   USER_DELETE_FAILED: 'user-delete-failed',
   /* Post List */
-  POST_LIST_PENDING: 'post-list-pendding',
+  POST_LIST_PENDING: 'post-list-pending',
   POST_LIST_SUCCESS: 'post-list-success',
   POST_LIST_FAILED: 'post-list-failed',
   /* Post Create */
-  POST_CREATE_PENDING: 'post-create-pendding',
+  POST_CREATE_PENDING: 'post-create-pending',
   POST_CREATE_SUCCESS: 'post-create-success',
   POST_CREATE_FAILED: 'post-create-failed',
   /* Post Update */
-  POST_UPDATE_PENDING: 'post-update-pendding',
+  POST_UPDATE_PENDING: 'post-update-pending',
   POST_UPDATE_SUCCESS: 'post-update-success',
   POST_UPDATE_FAILED: 'post-update-failed',
   /* Post Delete */
-  POST_DELETE_PENDING: 'post-delete-pendding',
+  POST_DELETE_PENDING: 'post-delete-pending',
   POST_DELETE_SUCCESS: 'post-delete-success',
   POST_DELETE_FAILED: 'post-delete-failed',
   
