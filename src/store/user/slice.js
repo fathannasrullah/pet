@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../../utils/constant'
 
-import { addUser, deleteUser, getUserList, updateUser } from './action'
+import { addUser, deleteUser, getRefreshUserList, getUserList, updateUser } from './action'
 
 
 const initialState = {
@@ -15,6 +15,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     getUserList,
+    getRefreshUserList,
     addUser,
     updateUser,
     deleteUser
@@ -37,6 +38,18 @@ const userSlice = createSlice({
     }),
     builder.addCase(getUserList.rejected, (state) => {
       state[STATE_NAME.POST_LIST] = {}
+      state.requestStatus = REQUEST_STATUS.USER_LIST_FAILED
+    }),
+    // refresh user list
+    builder.addCase(getRefreshUserList.fulfilled, (state, action) => {
+      state[STATE_NAME.USER_LIST] = action.payload[STATE_NAME.USER_LIST] || {}
+      state.requestStatus = REQUEST_STATUS.USER_LIST_SUCCESS
+    }),
+    builder.addCase(getRefreshUserList.pending, (state) => {
+      state.requestStatus = REQUEST_STATUS.USER_LIST_PENDING
+    }),
+    builder.addCase(getRefreshUserList.rejected, (state) => {
+      state[STATE_NAME.USER_LIST] = {}
       state.requestStatus = REQUEST_STATUS.USER_LIST_FAILED
     }),
     // add user

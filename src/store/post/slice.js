@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../../utils/constant'
 
-import { addPost, deletePost, getHomeList, getPostList, getSearchPostByTag, updatePost } from './action'
+import { addPost, deletePost, getHomeList, getPostList, getRefreshPostList, getSearchPostByTag, updatePost } from './action'
 
 
 const initialState = {
@@ -18,6 +18,7 @@ const postSlice = createSlice({
     getHomeList,
     getSearchPostByTag,
     getPostList,
+    getRefreshPostList,
     addPost,
     updatePost,
     deletePost
@@ -63,6 +64,18 @@ const postSlice = createSlice({
       state.requestStatus = REQUEST_STATUS.POST_LIST_PENDING
     }),
     builder.addCase(getPostList.rejected, (state) => {
+      state[STATE_NAME.POST_LIST] = {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_FAILED
+    }),
+    // refresh post list
+    builder.addCase(getRefreshPostList.fulfilled, (state, action) => {
+      state[STATE_NAME.POST_LIST] = action.payload[STATE_NAME.POST_LIST] || {}
+      state.requestStatus = REQUEST_STATUS.POST_LIST_SUCCESS
+    }),
+    builder.addCase(getRefreshPostList.pending, (state) => {
+      state.requestStatus = REQUEST_STATUS.POST_LIST_PENDING
+    }),
+    builder.addCase(getRefreshPostList.rejected, (state) => {
       state[STATE_NAME.POST_LIST] = {}
       state.requestStatus = REQUEST_STATUS.POST_LIST_FAILED
     }),

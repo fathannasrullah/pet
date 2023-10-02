@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { deletePost, getPostList } from '../store/post/action'
+import { deletePost, getPostList, getRefreshPostList } from '../store/post/action'
 
 import { postTableColumns } from '../utils/table-colums/post-table-columns'
 import { 
@@ -37,7 +37,8 @@ function Post() {
         deleteLoadingStatus={REQUEST_STATUS.POST_DELETE_PENDING}
         deleteSuccessStatus={REQUEST_STATUS.POST_DELETE_SUCCESS}
         onFetchList={getPostList}
-        
+        onFetchRefreshList={getRefreshPostList}
+
         selectedData={selectedData}
         openDeleteModal={openDeletePost}
         handleGetDataSelected={handleGetDataSelected}

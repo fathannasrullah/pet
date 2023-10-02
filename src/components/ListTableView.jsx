@@ -22,6 +22,7 @@ function ListTableView({
   deleteSuccessStatus,
   basePath,
   onFetchList,
+  onFetchRefreshList,
   onFetchSearch,
 
   openDeleteModal,
@@ -138,12 +139,11 @@ function ListTableView({
       limit: 0
     }))
     
-    if (fetchType.name === 'initial' ||
-      fetchType.name === 'next-page' ||
-      deleteDataSuccess
-    ) {
+    if (fetchType.name === 'initial' || fetchType.name === 'next-page') dispatch(onFetchList({ ...param }))
+
+    if (deleteDataSuccess) {
       handleCloseDeleteModal()
-      dispatch(onFetchList({ ...param }))
+      dispatch(onFetchRefreshList({ ...param, page: currPage }))
     }
   }, [fetchType, deleteDataSuccess])
 

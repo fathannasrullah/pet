@@ -19,6 +19,20 @@ export const getUserList = createAsyncThunk(
   }
 )
 
+export const getRefreshUserList = createAsyncThunk(
+  'user/refresh-list',
+  async (listParams, thunkAPI) => {
+    return (
+      await creatorListOrDetailAction(
+        thunkAPI,
+        listParams,
+        getUserListService,
+        STATE_NAME.USER_LIST,
+      )
+    )
+  }
+)
+
 export const addUser = createAsyncThunk(
   'user/add',
   async (addBody, thunkAPI) => {

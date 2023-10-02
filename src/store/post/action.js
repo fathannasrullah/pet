@@ -47,6 +47,20 @@ export const getPostList = createAsyncThunk(
   }
 )
 
+export const getRefreshPostList = createAsyncThunk(
+  'post/refresh-list',
+  async (listParams, thunkAPI) => {
+    return (
+      await creatorListOrDetailAction(
+        thunkAPI,
+        listParams,
+        getPostListService,
+        STATE_NAME.POST_LIST,
+      )
+    )
+  }
+)
+
 export const addPost = createAsyncThunk(
   'post/add',
   async (addBody, thunkAPI) => {
