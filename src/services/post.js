@@ -41,13 +41,11 @@ export const updatePostService = async (updateBody) => {
   )
 }
 
-export const deletePostService = async (deleteParams) => {
-  const { id } = deleteParams
-
-  return await (
-    creatorDeleteService(
+export const deletePostService = async (ID) => {
+  return (
+    await creatorDeleteService(
       SKUY_GASKEUN_API_URL_POST,
-      id,
+      ID,
     )
   )
 }

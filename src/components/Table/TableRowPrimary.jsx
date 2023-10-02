@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Grid, Skeleton, Stack, TableCell, TableRow } from '@mui/material'
+import { Skeleton, TableCell, TableRow } from '@mui/material'
 
 import { limitExcededStr } from '../../utils/helpers/string-helper'
 import { StyledActionContainer, StyledButton, StyledChip, StyledChipContainer, StyledImageContainer } from './styles'
@@ -7,10 +7,19 @@ import { postAction } from '../../utils/actions/post-actions'
 function TableRowPrimary({
   row,
   columns,
-  viewDetail = false,
-  basePath,
-  listIsLoading
+  listIsLoading,
+
+  handleOpenDeleteModal,
+  handleGetDataSelected
 }) {
+  const handleActionClick = (event) => {
+    const { name, value } = event.currentTarget
+
+    if (name === 'delete') handleOpenDeleteModal()
+    //if (name === 'edit') handleOpenEditModal()
+
+    handleGetDataSelected(value)
+  }
 
   return (
     <TableRow
@@ -44,7 +53,14 @@ function TableRowPrimary({
           value = postAction.map(({ label, Icon }, index ) => {
             return (
               <StyledActionContainer key={index} direction='row'>
-                <StyledButton variant='outlined' startIcon={<Icon />} size='small'>
+                <StyledButton
+                  name={label}
+                  value={JSON.stringify(row)}
+                  startIcon={<Icon />}
+                  onClick={handleActionClick}
+                  variant='outlined'
+                  size='small'
+                >
                   {label}
                 </StyledButton>
               </StyledActionContainer>

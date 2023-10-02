@@ -64,7 +64,7 @@ export const addPost = createAsyncThunk(
 
 export const updatePost = createAsyncThunk(
   'post/update',
-  async( updateBody, thunkAPI ) => {
+  async (updateBody, thunkAPI) => {
     return (
       await creatorUpdateAction(
         thunkAPI,
@@ -80,7 +80,7 @@ export const updatePost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
   'post/delete',
-  async( deleteParams, thunkAPI ) => {
+  async (deleteParams, thunkAPI) => {
     return (
       await creatorDeleteAction(
         thunkAPI,

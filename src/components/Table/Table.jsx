@@ -26,7 +26,10 @@ function Table({
   viewDetail,
   basePath,
   listIsLoading,
-  onPageChange
+  onPageChange,
+
+  handleGetDataSelected,
+  handleOpenDeleteModal
 }) {
   return (
     <Card>
@@ -56,6 +59,9 @@ function Table({
                     viewDetail={viewDetail}
                     basePath={basePath}
                     listIsLoading={listIsLoading}
+
+                    handleGetDataSelected={handleGetDataSelected}
+                    handleOpenDeleteModal={handleOpenDeleteModal}
                   />
                 )
               })}

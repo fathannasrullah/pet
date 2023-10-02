@@ -7,19 +7,30 @@ import { Button, Grid } from '@mui/material'
 import { isEmpty } from 'lodash'
 
 import Table from '../components/Table/Table'
+import DeleteDataModal from './DeleteDataModal'
 
 function ListTableView({
   TableRowCustom,
-  showSearchFilter = false,
+  //showSearchFilter = false,
   addButtonLabel = 'Create Post',
   tableColumns,
   responseKeyName,
   storeName,
   listStateName,
-  listStatusLoading,
+  listLoadingStatus,
+  deleteLoadingStatus,
+  deleteSuccessStatus,
   basePath,
   onFetchList,
-  onFetchSearch
+  onFetchSearch,
+
+  openDeleteModal,
+  closeDeleteModal,
+  selectedData,
+  handleGetDataSelected,
+  handleOpenDeleteModal,
+  handleCloseDeleteModal,
+  handleDeleteData
 }) {
   const [page, setPage] = useState(0)
   const [fetchType, setFetchType] = useState({ name: 'initial' })
@@ -34,7 +45,9 @@ function ListTableView({
     [listStateName]: listState
   } = useSelector((state) => state[storeName])
 
-  const listIsLoading = requestStatus === listStatusLoading
+  const listIsLoading = requestStatus === listLoadingStatus
+  const deleteDataLoading = requestStatus === deleteLoadingStatus
+  const deleteDataSuccess = requestStatus === deleteSuccessStatus
 
   const {
     [responseKeyName]: list = [],
@@ -111,7 +124,7 @@ function ListTableView({
       limit: 30,
       page: 1
     }
-    console.log('page :' + page)
+
     if (fetchType.name === 'next-page') {
       param = {
         ...param,
@@ -125,8 +138,14 @@ function ListTableView({
       limit: 0
     }))
     
-    if (fetchType.name === 'initial' || fetchType.name === 'next-page') dispatch(onFetchList({ ...param }))
-  }, [fetchType])
+    if (fetchType.name === 'initial' ||
+      fetchType.name === 'next-page' ||
+      deleteDataSuccess
+    ) {
+      handleCloseDeleteModal()
+      dispatch(onFetchList({ ...param }))
+    }
+  }, [fetchType, deleteDataSuccess])
 
   useEffect(() => {
     handleFetchList()
@@ -135,8 +154,8 @@ function ListTableView({
   const filterFunction = FILTERS[filter.filterKey]
   const filteredList = filterFunction(list)
 
-  console.log('currPage :' + page)
   return (
+    <>
     <Grid spacing={2} container>
       <Grid item xs={12} justifyContent='center' container>
         <Button variant='contained'>
@@ -153,9 +172,24 @@ function ListTableView({
           basePath={basePath}
           listIsLoading={listIsLoading}
           onPageChange={handlePageChange}
+
+          handleGetDataSelected={handleGetDataSelected}
+          handleOpenDeleteModal={handleOpenDeleteModal}
         />
       </Grid>
     </Grid>
+
+    {openDeleteModal &&
+      <DeleteDataModal
+        open={openDeleteModal}
+        close={closeDeleteModal}
+        selectedData={selectedData}
+        deleteDataLoading={deleteDataLoading}
+        handleClose={handleCloseDeleteModal}
+        handleDeleteData={handleDeleteData}
+      />
+    }
+    </>
   )
 }
 

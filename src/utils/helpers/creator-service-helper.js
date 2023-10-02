@@ -132,7 +132,7 @@ export const creatorUpdateService = async (endpoint, ID, bodyUpdateData, general
  * async function for handling delete data
  */
 export const creatorDeleteService = async (endpoint, ID) => {
-  if (!APP_ID || !identity) return null
+  if (!APP_ID || !ID) return null
 
   const endpointWithID = `${endpoint}/${ID}`
 
