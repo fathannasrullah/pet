@@ -8,6 +8,9 @@ import { isEmpty } from 'lodash'
 
 import Table from '../components/Table/Table'
 import DeleteDataModal from './DeleteDataModal'
+import CreateUpdateModal from './CreateUpdateModal/CreateUpdateModal'
+import { FormProvider, useForm } from 'react-hook-form'
+import ImagePreviewModal from './ImagePreviewModal'
 
 function ListTableView({
   TableRowCustom,
@@ -25,20 +28,35 @@ function ListTableView({
   onFetchRefreshList,
   onFetchSearch,
 
+  openImagePreviewModal,
+  handleOpenImagePreviewModal,
+  handleCloseImagePreviewModal,
+
   source,
   openDeleteModal,
-  closeDeleteModal,
   selectedData,
   handleGetDataSelected,
   handleOpenDeleteModal,
   handleCloseDeleteModal,
-  handleDeleteData
+  handleDeleteData,
+
+  openCreateUpdateModal,
+  title,
+  actionType,
+  inputs,
+  btnText,
+  storeNameForAutocomplate,
+  stateNameForAutocomplete,
+  getAutocompleteList,
+  handleSetTitleAndActionType,
+  handleOpenCreateUpdateModal,
+  handleCloseCreateUpdateModal,
+  handleSubmit
 }) {
   const [page, setPage] = useState(0)
   const [fetchType, setFetchType] = useState({ name: 'initial' })
   const [searchValue, setSearchValue] = useState('')
   const [searchTimeout, setSearchTimeout] = useState(null)
-
   const [filter, setFilter] = useState({ filterKey: 'NONE' })
 
   const dispatch = useDispatch()
@@ -154,43 +172,72 @@ function ListTableView({
 
   const filterFunction = FILTERS[filter.filterKey]
   const filteredList = filterFunction(list)
-
+  console.log('selecteddata :', selectedData)
   return (
     <>
-    <Grid spacing={2} container>
-      <Grid item xs={12} justifyContent='center' container>
-        <Button variant='contained'>
-          {addButtonLabel}
-        </Button>
+      <Grid spacing={2} container>
+        <Grid item xs={12} justifyContent='center' container>
+          <Button
+            variant='contained'
+            onClick={handleOpenCreateUpdateModal}
+          >
+            {addButtonLabel}
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Table
+            TableRowCustom={TableRowCustom}
+            columns={tableColumns}
+            rows={filteredList}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            basePath={basePath}
+            listIsLoading={listIsLoading}
+            onPageChange={handlePageChange}
+            
+            handleGetDataSelected={handleGetDataSelected}
+            handleOpenImagePreviewModal={handleOpenImagePreviewModal}
+            handleOpenDeleteModal={handleOpenDeleteModal}
+            handleOpenCreateUpdateModal={handleOpenCreateUpdateModal}
+            handleSetTitleAndActionType={handleSetTitleAndActionType}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Table
-          TableRowCustom={TableRowCustom}
-          columns={tableColumns}
-          rows={filteredList}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          basePath={basePath}
-          listIsLoading={listIsLoading}
-          onPageChange={handlePageChange}
 
-          handleGetDataSelected={handleGetDataSelected}
-          handleOpenDeleteModal={handleOpenDeleteModal}
+      {openImagePreviewModal &&
+        <ImagePreviewModal
+          open={openImagePreviewModal}
+          image={selectedData.image || selectedData.picture}
+          handleClose={handleCloseImagePreviewModal}
         />
-      </Grid>
-    </Grid>
+      }
 
-    {openDeleteModal &&
-      <DeleteDataModal
-        source={source}
-        open={openDeleteModal}
-        close={closeDeleteModal}
-        selectedData={selectedData}
-        deleteDataLoading={deleteDataLoading}
-        handleClose={handleCloseDeleteModal}
-        handleDeleteData={handleDeleteData}
-      />
-    }
+      {openDeleteModal &&
+        <DeleteDataModal
+          source={source}
+          open={openDeleteModal}
+          selectedData={selectedData.firstName || selectedData.owner.firstName}
+          deleteDataLoading={deleteDataLoading}
+          handleClose={handleCloseDeleteModal}
+          handleDeleteData={handleDeleteData}
+        />
+      }
+      
+      {openCreateUpdateModal &&
+        <CreateUpdateModal
+          title={title}
+          actionType={actionType}
+          open={openCreateUpdateModal}
+          inputs={inputs}
+          btnText={btnText}
+          storeNameForAutocomplete={storeNameForAutocomplate}
+          stateNameForAutocomplete={stateNameForAutocomplete}
+          getAutocompleteList={getAutocompleteList}
+          handleOpenCreateUpdateModal={handleOpenCreateUpdateModal}
+          handleCloseCreateUpdateModal={handleCloseCreateUpdateModal}
+          onSubmit={handleSubmit}
+        />
+      }
     </>
   )
 }

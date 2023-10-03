@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
   List,
@@ -12,8 +12,8 @@ import { navigation } from '../../utils/navigation'
 import { StyledDrawerPermanent, StyledDrawerTemporary, StyledListItemButton, StyledNavigation } from './styles'
 
 function Navigation({ handleDrawerToggle, mobileOpen }) {
-  /*let selectedPath = ''
-  if (selectedPath.split('/').length > 2) selectedPath = selectedPath.split('/').slice(0, 2).join('/')*/
+  const currLocation = useLocation()
+  const selectedPath = currLocation.pathname
   const navigate = useNavigate()
 
   const handleNavigateTo = (path) => {
@@ -28,7 +28,7 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
           <ListItem key={index} disablePadding>
             <StyledListItemButton
               onClick={() => handleNavigateTo(path)}
-              //selected={path === selectedPath}
+              selected={path === selectedPath}
             >
               <ListItemIcon>
                 <Icon />

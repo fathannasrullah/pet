@@ -1,8 +1,8 @@
 import { Divider } from '@mui/material'
 
-import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined'
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
+import PhotoLibraryRoundedIcon from '@mui/icons-material/PhotoLibraryRounded'
 
 export const navigation  = [
   {
@@ -13,12 +13,12 @@ export const navigation  = [
   },
   {
     name: 'User',
-    Icon: ListAltOutlinedIcon,
+    Icon: AccountCircleRoundedIcon,
     path: '/user'
   },
   {
     name: 'Post',
-    Icon: ShoppingCartOutlinedIcon,
+    Icon: PhotoLibraryRoundedIcon,
     path: '/post',
     Divider: Divider
   }

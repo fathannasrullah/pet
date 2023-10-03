@@ -29,7 +29,10 @@ function Table({
   onPageChange,
 
   handleGetDataSelected,
-  handleOpenDeleteModal
+  handleOpenImagePreviewModal,
+  handleOpenDeleteModal,
+  handleOpenCreateUpdateModal,
+  handleSetTitleAndActionType,
 }) {
   return (
     <Card>
@@ -61,7 +64,11 @@ function Table({
                     listIsLoading={listIsLoading}
 
                     handleGetDataSelected={handleGetDataSelected}
+                    handleOpenImagePreviewModal={handleOpenImagePreviewModal}
                     handleOpenDeleteModal={handleOpenDeleteModal}
+                    handleOpenCreateUpdateModal={handleOpenCreateUpdateModal}
+                    handleSetTitleAndActionType={handleSetTitleAndActionType}
+                    
                   />
                 )
               })}

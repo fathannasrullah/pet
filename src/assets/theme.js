@@ -75,11 +75,19 @@ export const theme = createTheme({
         }
       }
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: purple.light[3],
+        }
+      }
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: ({ ownerState }) => ({
           border: `1px solid${purple.light[2]}`,
-          ...(ownerState.value.length > 0
+          color: purple.light[1],
+          /*...(!isEmpty(ownerState.value) && ownerState.value.length > 0
               ? { opacity: 1 }
               : {
                   opacity: 0.5,
@@ -87,11 +95,8 @@ export const theme = createTheme({
                     opacity: 1
                   },
                 }
-            )
+            )*/
         }),
-        notchedOutline: {
-          border: 'none'
-        }
       }
     },
     MuiSelect: {

@@ -10,15 +10,26 @@ function TableRowPrimary({
   listIsLoading,
 
   handleOpenDeleteModal,
-  handleGetDataSelected
+  handleOpenImagePreviewModal,
+  handleGetDataSelected,
+  handleOpenCreateUpdateModal,
+  handleSetTitleAndActionType,
 }) {
   const handleActionClick = (event) => {
     const { name, value } = event.currentTarget
 
     if (name === 'delete') handleOpenDeleteModal()
-    //if (name === 'edit') handleOpenEditModal()
+    if (name === 'edit') {
+      handleOpenCreateUpdateModal()
+      handleSetTitleAndActionType('edit', 'edit')
+    }
 
     handleGetDataSelected(value)
+  }
+
+  const handleImageClick = (event) => {
+    handleGetDataSelected(event.currentTarget.value)
+    handleOpenImagePreviewModal()
   }
 
   return (
@@ -35,7 +46,9 @@ function TableRowPrimary({
         if (name === 'owner') value = `${value.firstName} ${value.lastName}`
         if (name === 'image' || name === 'picture') {
           value = (
-            <StyledImageContainer>
+            <StyledImageContainer 
+              value={JSON.stringify(row)}
+              onClick={handleImageClick}>
               <img src={value} />
             </StyledImageContainer>
           )

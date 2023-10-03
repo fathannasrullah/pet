@@ -18,7 +18,7 @@ export const StyledChip = styled(Chip)(() => ({
   padding: '5px'
 }))
 
-export const StyledImageContainer = styled('div')(() => ({
+export const StyledImageContainer = styled(Button)(() => ({
   margin: 0,
   height: '30px',
   overflow: 'hidden',
