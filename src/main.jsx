@@ -21,7 +21,7 @@ root.render(
   <Provider store={store}>
     <StrictMode>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.DEV ? '/' : '/pet'}>
           <CssBaseline />
           <App />
         </BrowserRouter>
