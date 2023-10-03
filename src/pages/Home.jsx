@@ -2,17 +2,30 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, Stack, Typography } from '@mui/material'
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import ShareIcon from '@mui/icons-material/Share'
 
-import { STATE_NAME, STORE_NAME } from '../utils/constant'
+import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
 
 import { getHomeList, getSearchPostByTag } from '../store/post/action'
 
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import Search from '../components/Search/Search'
 import { isEmpty } from 'lodash'
+import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
+import { limitExcededStr } from '../utils/helpers/string-helper'
+
+
+export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
+  '& p': {
+    fontSize: '16px',
+    color: theme.palette.common.purple.light[1]
+  },
+  '& span': {
+    fontSize: '11px',
+    color: theme.palette.common.purple.light[3]
+  }
+}))
 
 const useNavigateParams = () => {
   const navigate = useNavigate()
@@ -29,6 +42,7 @@ function Home() {
     [STATE_NAME.HOME_LIST]: listState
   } = useSelector((state) => state[STORE_NAME.POST])
 
+  const listLoading = requestStatus === REQUEST_STATUS.POST_LIST_PENDING
   const { data: list = [], total } = listState
   const pageAmount = Math.floor(total / 20)
 
@@ -106,63 +120,78 @@ function Home() {
             onSearchChange={handleSearchChange}
           />
         </Grid>
-        <Grid item xs={12} spacing={2} container>
+        <Grid minHeight='80vh' item xs={12} spacing={2} container>
+          {isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>NO DATA</Typography></Grid>}
           {list.map(({
             id,
             owner,
             text,
             image,
             publishDate,
-            tags
+            tags,
+            likes
           }) => {
-            const { firstName, lastName } = owner
-            const fullName = firstName + lastName
+            const { firstName, lastName, picture } = owner
+            const fullName = limitExcededStr(`${firstName} ${lastName}`, 8)
+            const date = getReadableDate(publishDate, 'en')
+            const contentText = limitExcededStr(text, 33)
+            const likeAmount = currencyFormat(likes, 0)
 
             return (
               <Grid item xs={6} md={3} key={id}>
-                <Card sx={{ maxWidth: 345 }}>
-                  <CardHeader
-                    avatar={
-                      <Avatar aria-label="recipe">
-                        R
-                      </Avatar>
-                    }
-                    title={fullName}
-                    subheader={publishDate}
+                <Card sx={{ minHeight: 400, maxWidth: 345, overflow: 'auto' }}>
+                  <StyledCardHeader
+                    avatar={<Avatar aria-label="recipe" src={picture} />}
+                    title={listLoading ? (
+                      <Skeleton sx={{ marginBottom: '5px' }} variant='rectangular' /> 
+                    ) : (
+                      <p>{fullName}</p> 
+                    )}
+                    subheader={listLoading ? (
+                      <Skeleton variant='rectangular' /> 
+                    ) : (
+                      <span>{date}</span> 
+                    )}
                   />
-                  <CardMedia
-                    component='img'
-                    height='194'
-                    image={image}
-                    alt={fullName}
-                  />
+                  {listLoading ? (
+                    <Skeleton sx={{ minHeight: '200px' }} variant='rectangular' />
+                  ) : (
+                    <CardMedia
+                      component='img'
+                      height='194'
+                      image={image}
+                      alt={fullName}
+                    />
+                  )}
                   <CardContent>
-                    <Typography variant='body2' color='text.secondary'>
-                      {text}
-                    </Typography>
-                    <Grid container spacing={0.5}>
-                      {tags.map((tag, index) => (
-                        <Grid key={index} item>
-                          <Chip label={tag} size='small' />
-                        </Grid>
-                      ))}
-                    </Grid>
+                    {listLoading ? (<Skeleton variant='rectangular'/>) : (<Typography>{contentText}</Typography>)}
                   </CardContent>
-                  <CardActions disableSpacing>
-                    <IconButton aria-label='add to favorites'>
-                      <FavoriteIcon />
+                  {listLoading ? (
+                    <Skeleton variant='rectangular' />
+                  ) : (
+                    <Stack direction='row' spacing={0.5} padding='0 10px'>
+                      {tags.map((tag, index) => (
+                        <Chip key={index} label={tag} size='small' />
+                      ))}
+                    </Stack>
+                  )}
+                  {listLoading ? (
+                    <Skeleton sx={{ marginTop: '5px' }} variant='rectangular' />
+                  ) : (
+                    <CardActions disableSpacing>
+                      <IconButton aria-label='likes'>
+                        <FavoriteIcon/>
                       </IconButton>
-                    <IconButton aria-label="share">
-                      <ShareIcon />
-                    </IconButton>
-                  </CardActions>
+                      <span>{likeAmount}</span>
+                    </CardActions>
+                  )}
                 </Card>
               </Grid>
             )
           }
         )}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} justifyContent='center' container>
           <Stack>
             <Pagination
               page={page}
