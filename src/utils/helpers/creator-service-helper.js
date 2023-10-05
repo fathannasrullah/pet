@@ -106,8 +106,8 @@ export const creatorAddService = async (endpoint, bodyAddData, generalizeData) =
  * @returns 
  * async function for handling update data after generalized data
  */
-export const creatorUpdateService = async (endpoint, ID, bodyUpdateData, generalizeData) => {
-  if (!APP_ID || !identity) return null
+export const creatorUpdateService = async (endpoint, ID, bodyUpdateData) => {
+  if (!APP_ID || !ID) return null
 
   const endpointWithID = `${endpoint}/${ID}`
 
