@@ -2,9 +2,9 @@ import { Box, Dialog, DialogTitle, Typography, styled } from '@mui/material'
 
 export const StyledDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    width: '93vw',
+    width: '85vw',
     minHeight: '60vh',
-    padding: '20px',
+    padding: '20px 10px',
     borderRadius: '50px'
   }
 }))
