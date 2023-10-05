@@ -49,7 +49,7 @@ function TableRowPrimary({
             <StyledImageContainer 
               value={JSON.stringify(row)}
               onClick={handleImageClick}>
-              <img src={value} />
+              <img src={value || 'https://i.ibb.co/V2nrLXx/no-image.jpg'} />
             </StyledImageContainer>
           )
         }

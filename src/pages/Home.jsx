@@ -14,7 +14,7 @@ import Search from '../components/Search/Search'
 import { isEmpty } from 'lodash'
 import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
 import { limitExcededStr } from '../utils/helpers/string-helper'
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   '& p': {
@@ -141,7 +141,7 @@ function Home() {
               <Grid item xs={6} md={3} key={id}>
                 <Card sx={{ minHeight: 400, maxWidth: 345, overflow: 'auto' }}>
                   <StyledCardHeader
-                    avatar={<Avatar aria-label="recipe" src={picture} />}
+                    avatar={<Avatar aria-label="recipe" src={picture || <AccountCircleIcon />} />}
                     title={listLoading ? (
                       <Skeleton sx={{ marginBottom: '5px' }} variant='rectangular' /> 
                     ) : (
@@ -159,7 +159,7 @@ function Home() {
                     <CardMedia
                       component='img'
                       height='194'
-                      image={image}
+                      image={image || 'https://i.ibb.co/V2nrLXx/no-image.jpg'}
                       alt={fullName}
                     />
                   )}
