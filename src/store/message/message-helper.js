@@ -98,8 +98,8 @@ const serverInternalError = (dispatch) => {
   return dispatch(
     setMessage(
       createMessage(
-        'error.internal-server-error',
-        'error.internal-server-error',
+        'Error',
+        'internal server error',
         500,
         true,
         VARIANT_MESSAGES.ERROR,
