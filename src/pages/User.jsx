@@ -76,7 +76,6 @@ function User() {
     !isEmpty(userID) && dispatch(getUserDetail(userID))
   }, [userID, dispatch])
 
-  console.log('create status :', requestStatus)
   return (
     <main>
       <ListTableView
