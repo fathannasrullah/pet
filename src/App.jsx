@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearMessage } from './store/message/slice' 
 import { STORE_NAME } from './utils/constant'
 
 import AppBar from './components/AppBar/AppBar'
@@ -8,14 +9,16 @@ import Home from './pages/Home'
 import Post from './pages/Post'
 import User from './pages/User'
 
-
 function App() {
+  const dispatch = useDispatch()
   const {
     isShowMessage,
     primaryText,
     secondaryText
   } = useSelector((state) => state[STORE_NAME.MESSAGE])
-  
+
+  const handleCloseMessage = () => dispatch(clearMessage())
+
   return (
     <>
       <AppBar />
@@ -31,6 +34,7 @@ function App() {
           openMessage={isShowMessage}
           primaryText={primaryText}
           secondaryText={secondaryText}
+          handleCloseMessage={handleCloseMessage}
         />
       }
     </>

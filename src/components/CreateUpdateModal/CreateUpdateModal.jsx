@@ -104,6 +104,7 @@ function CreateUpdateModal({
       likes: Number(likes),
       tags: input.tags
     }*/
+    console.log('data that send :', data)
     onSubmit(data)
   }
    

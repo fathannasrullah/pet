@@ -1,32 +1,24 @@
 import { Alert, AlertTitle, Snackbar } from '@mui/material'
 import { useState } from 'react'
 
-function MessageSnackbar({ openMessage, primaryText, secondaryText }) {
-  const messageText = 'message text'
-
+function MessageSnackbar({ openMessage, primaryText, secondaryText, handleCloseMessage }) {
   const [state, setState] = useState({
-    open: openMessage,
     vertical: 'top',
     horizontal: 'right',
   })
-  const { vertical, horizontal, open } = state
-
-  const handleClose = () => {
-    setState({ ...state, open: false })
-  }
-
+  const messageText = 'message text'
+  const { vertical, horizontal } = state
   const showingPrimaryText = typeof primaryText === 'object' ? messageText : primaryText
 
   return (
     <Snackbar
       anchorOrigin={{ vertical, horizontal }}
-      open={open}
+      open={openMessage}
       autoHideDuration={5000}
-      onClose={handleClose}
-      //message={}
+      onClose={handleCloseMessage}
       key={vertical + horizontal}
     >
-      <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
+      <Alert onClose={handleCloseMessage} severity='success' sx={{ width: '100%' }}>
         <AlertTitle>
           <strong>
             {showingPrimaryText}
