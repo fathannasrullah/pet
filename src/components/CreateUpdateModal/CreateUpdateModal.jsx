@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import CustomAutocomplete from "../CustomAutocomplete/CustomAutocomplete"
 import autocompleteHelper from "../../utils/helpers/autocomplete-helper"
 import { createFilterOptions } from "../CustomAutocomplete/useCustomAutocomplete"
-import { FormProvider, useForm } from "react-hook-form"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { AnimatePresence, motion } from 'framer-motion'
 import CloseIcon from '@mui/icons-material/Close'
 import ErrorIcon from '@mui/icons-material/Error'
@@ -58,6 +58,7 @@ function CreateUpdateModal({
     handleSubmit,
     register,
     formState: { errors },
+    control,
     reset
   } = useForm({ defaultValues: initialInput })
 
@@ -104,6 +105,7 @@ function CreateUpdateModal({
   console.log('initialinput :', initialInput)
   useEffect(() => {
     reset(initialInput)
+
     if (createDataSuccess || updateDataSuccess && !isEmpty(initialInput)) {
       reset(initialInput)
       handleCloseCreateUpdateModal()
@@ -165,7 +167,8 @@ function CreateUpdateModal({
             defaultValue,
             selectOptions,
             maxLength,
-            validation
+            validation,
+            onChange
           }, index) => {
             const inputErrors = findInputError(errors, name)
             const isInvalid = isFormInvalid(inputErrors)
@@ -206,15 +209,32 @@ function CreateUpdateModal({
                   
 
                   {isAutocomplete &&
+
+
+<Controller
+control={control}
+name={name}
+rules={validation}
+render={({ field: { onChange, value } }) => (
                     <CustomAutocomplete
-                      name={name}
-                      //value={input[name]}
+                      //name={name}
+                      disabled={actionType === 'edit'}
+                      value={value}
                       options={optionList}
                       totalOptions={autocompleteHelper.getOptionPaginatedAutocomplete( optionList, 30, 3 )}
                       onOpen={handleOpenAutocomplete}
-                      getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-                      isOptionEqualToValue={(option, value) => autocompleteHelper.isOptionEqualToValue(option, value, 'id')}
-                      onChange={(event, currValue) => handleAutocompleteChange(event, name, currValue)}
+                      getOptionLabel={(option) => option ? `${option.firstName} ${option.lastName}` : ''}
+                      //isOptionEqualToValue={(option, value) => option.id === value.id}
+                      //isOptionEqualToValue={(option, value) => autocompleteHelper.isOptionEqualToValue(option, value, 'id')}
+                      //onChange={(event, currValue) => handleAutocompleteChange(event, name, currValue)}
+                      isOptionEqualToValue={(option, value) =>
+                        value === undefined || value === '' || option.id === value.id
+                        
+                      }
+                      onChange={(event, option) => {
+                        event.preventDefault()
+                        onChange(option)
+                      }}
                       autoHighlight={true}
                       isPaginated={true}
                       ListboxProps={{
@@ -231,45 +251,50 @@ function CreateUpdateModal({
                         <TextField
                           {...params}
                           label={label}
-                          {...register(name, validation)}
+                          //{...register(name, validation)}
                         />
                       )}
-                      {...register(name, validation)}
+                      //{...register(name, validation)}
                       
                     />
+)}
+/>
+
                   }
               
                   {isAutocompleteTag &&
                     <Autocomplete
                       id="combo-box-demo"
                       name={name}
+                      multiple
                       options={[]}
                       //value={input[name]}
-                      multiple
+                      defaultValue={[ 'type first then enter' ]}
                       getOptionLabel={(option) => {
                         return option
                       }}
-                      inputValue={tagName}
+                      //inputValue={tagName}
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           label={label}
                           name={name}
                           variant="outlined"
-                          {...register(name, validation)}
+                          //{...register(name, validation)}
                         />
                       )}
-                      onInputChange={(event, value) => {
+                      /*onInputChange={(event, value) => {
                         event.preventDefault()
                         setTagName(value)
-                        //setInput(prevInput => ({ ...prevInput, [name]: [value] }))
-                      }}
+                      }}*/
+                      /*
                       onClose={(event, reason) => {
                         event.preventDefault()
                           if (reason === "blur") {
                           setSelectedTag(null);
                         }
-                      }}
+                      }}*/
+                      
                       onChange={(event, value, reason) => {
                         event.preventDefault()
                     
@@ -325,13 +350,11 @@ function CreateUpdateModal({
                       multiline={isMultiline}
                       rows={rows}
                       type={type}
-                      //value={input[name]}
-                      //onChange={onChange}
                       fullWidth
                       variant='outlined'
-                      inputProps={{
+                      /*inputProps={{
                         maxLength: maxLength,
-                      }}
+                      }}*/
                       {...register(name, validation)}
                    />
                   }

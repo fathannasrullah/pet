@@ -1,5 +1,9 @@
 export const initialInputPost = [
     {
+      name: 'id',
+      value: null
+    },
+    {
       isAutocomplete: true,
       label: 'Owner',
       name: 'owner',
@@ -10,6 +14,7 @@ export const initialInputPost = [
           message: 'required',
         }
       },
+      onChange: (value) => console.log('vakue :', value)
     },
     {
       isInput: true,
@@ -24,6 +29,10 @@ export const initialInputPost = [
           value: true,
           message: 'required',
         },
+        minLength: {
+          value: 6,
+          message: '6 characters min'
+        },
         maxLength: {
           value: 50,
           message: '50 characters max',
@@ -35,19 +44,35 @@ export const initialInputPost = [
       label: 'Image URL',
       name: 'image',
       type: 'text',
-      value: ''
+      value: '',
+      validation: {
+        required: {
+          value: false
+        }
+      },
     },
     {
       isInput: true,
       label: 'Likes',
       name: 'likes',
       type: 'number',
-      value: 0
+      value: 0,
+      validation: {
+        required: {
+          value: false
+        },
+        valueAsNumber: true,
+      },
     },
     {
       isAutocompleteTag: true,
       label: 'Tags',
       name: 'tags',
-      value: []
+      value: [],
+      validation: {
+        required: {
+          value: false
+        }
+      },
     }
 ]

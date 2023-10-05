@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { isEmpty } from 'lodash'
 
@@ -18,6 +18,7 @@ import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCrea
 
 function Post() {
   const dispatch = useDispatch()
+  const { requestStatus } = useSelector(state => state[STORE_NAME.POST])
 
   const [selectedData, setSelectedData] = useState(null)
   const [openImagePreview, setOpenImagePreview] = useState(false)
@@ -26,28 +27,39 @@ function Post() {
   const [title, setTitle] = useState('add new post')
   const [actionType, setActionType] = useState('create')
 
+  const createPostLoading = requestStatus === REQUEST_STATUS.POST_CREATE_PENDING
+  const createPostSuccess = requestStatus === REQUEST_STATUS.POST_CREATE_SUCCESS
+  const updatePostLoading = requestStatus === REQUEST_STATUS.POST_UPDATE_PENDING
+  const updatePostSuccess = requestStatus === REQUEST_STATUS.POST_UPDATE_SUCCESS
+  
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
   const handleOpenDeletePost = () => setOpenDeletePost(true)
   const handleCloseDeletePost = () => setOpenDeletePost(false)
-  const handleCloseCreateUpdatePost = () => setOpenCreateUpdatePost(false)
   const handleGetDataSelected = (data) => setSelectedData(JSON.parse(data))
   const handleDeletePost = () => dispatch(deletePost(selectedData.id))
-
+  
   const handleSetTitleAndActionType = (title, actionType) => {
     setTitle(title)
     setActionType(actionType)
   }
   
-  const handleOpenCreateUpdatePost = () => {
-    if (actionType === 'edit') handleSetTitleAndActionType('add new post', 'add')
-    setOpenCreateUpdatePost(true)
+  const handleOpenCreateUpdatePost = () => setOpenCreateUpdatePost(true)
+  const handleCloseCreateUpdatePost = () => {
+    if (actionType === 'edit') handleSetTitleAndActionType('add new post', 'create')
+    if (createPostSuccess || updatePostSuccess) dispatch(getPostList())
+    setOpenCreateUpdatePost(false)
   }
 
   const handleSubmit = (data) => {
     console.log('login submitted: ', data)
+    const submittedData = {
+      ...data,
+      owner: data.owner.id
+    }
+
     dispatch(
-      actionType === 'create' ? addPost(data) : updatePost(data)
+      actionType === 'create' ? addPost(submittedData) : updatePost(submittedData)
     )
   }
 
@@ -78,6 +90,11 @@ function Post() {
         openCreateUpdateModal={openCreateUpdatePost}
         title={title}
         actionType={actionType}
+        details={selectedData}
+        createDataLoading={createPostLoading}
+        createDataSuccess={createPostSuccess}
+        updateDataLoading={updatePostLoading}
+        updateDataSuccess={updatePostSuccess}
         inputs={generateInputCreateUpdatePost(actionType, selectedData)}
         btnText='post'
         storeNameForAutocomplate={STORE_NAME.USER}

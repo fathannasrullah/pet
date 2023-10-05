@@ -104,8 +104,8 @@ export const creatorAddAction = async(
     } else {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
-        responseMessage,
         errorMessage,
+        responseMessage,
         false,
         paramsTextPrimary,
         paramsTextSecondary,
