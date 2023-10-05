@@ -69,8 +69,8 @@ export const addPost = createAsyncThunk(
         thunkAPI,
         addBody,
         addPostService,
-        'success.add.post',
-        'error.add.post',
+        'Success Add Post',
+        'Failed Add Post',
       )
     )
   }
@@ -84,8 +84,8 @@ export const updatePost = createAsyncThunk(
         thunkAPI,
         updateBody,
         updatePostService,
-        'success.update.post',
-        'error.update.post',
+        'Success Update Post',
+        'Failed Update Post',
         {}, {},
       )
     )
@@ -100,8 +100,8 @@ export const deletePost = createAsyncThunk(
         thunkAPI,
         deleteParams,
         deletePostService,
-        'success.delete.post',
-        'error.delete.post',
+        'Success Delete Post',
+        'Error Delete Post',
         {}, {},
       )
     )
