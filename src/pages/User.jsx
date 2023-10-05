@@ -65,10 +65,10 @@ function User() {
     if (createUserSuccess || updateUserSuccess) dispatch(getUserList())
   }
   
-  const handleSubmit = (input) => {
-    console.log('data submitted: ', input)
+  const handleSubmit = (data) => {
+    console.log('data submitted: ', data)
     dispatch(
-      actionType === 'create' ? addUser(input) : updateUser(input)
+      actionType === 'create' ? addUser(data) : updateUser(data)
     )
   }
   

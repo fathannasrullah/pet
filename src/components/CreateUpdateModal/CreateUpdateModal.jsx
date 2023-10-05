@@ -107,7 +107,7 @@ function CreateUpdateModal({
     console.log('data that send :', data)
     onSubmit(data)
   }
-   
+  console.log('initialinput :', initialInput)
   useEffect(() => {
     reset(initialInput)
     if (createDataSuccess || updateDataSuccess && !isEmpty(initialInput)) {
@@ -115,8 +115,6 @@ function CreateUpdateModal({
       handleCloseCreateUpdateModal()
     }
   }, [reset, initialInput, createDataSuccess, updateDataSuccess])
-
-  //const optionsForSelect = ['mr', 'mrs', 'miss']
 
   if (actionType === 'edit' && isEmpty(details)) {
     return (

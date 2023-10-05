@@ -1,4 +1,8 @@
 export const initialInputUser = [
+  { 
+    name: 'id',
+    value: null
+  },
   {
     isSelect: true,
     label: 'Title',

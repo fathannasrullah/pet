@@ -7,20 +7,16 @@ export const generateInputCreateUpdateUser = (actionType, userDetails) => {
   if (actionType === 'edit' && !isEmpty(userDetails)) {
     generatedData = generatedData.map((input) => {
       const { name } = input
-      const { title, firstName, lastName, email, picture } = userDetails
+      const { id, title, firstName, lastName, email, picture } = userDetails
 
       if (name === 'title') return { ...input, defaultValue: title }
       if (name === 'firstName') return { ...input, value: firstName }
       if (name === 'lastName') return { ...input, value: lastName }
       if (name === 'email') return { ...input, value: email }
       if (name === 'picture') return { ...input, value: picture }
+      if (name === 'id') return { ...input, value: id }
     })
-
-    generatedData = [
-      ...generatedData,
-      { id: userDetails.id }
-    ]
   }
-
+  
   return generatedData
 }
