@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 
-import { DialogContent, TextField, Typography, Button, Autocomplete, Grid, DialogActions, Select, IconButton, MenuItem, ListItemText, ListItemIcon, InputLabel, FormControl, CircularProgress, Box } from '@mui/material'
+import { DialogContent, TextField, Typography, Button, Autocomplete, Grid, DialogActions, Select, IconButton, MenuItem, ListItemText, ListItemIcon, InputLabel, FormControl, CircularProgress, Box, Popper } from '@mui/material'
 
 import { StyledDialog, StyledDialogTitle, StyledFormControl } from './styles'
 import { useDispatch, useSelector } from "react-redux"
@@ -98,12 +98,6 @@ function CreateUpdateModal({
   }
 
   const handleSubmitForm = (data) => {
-   /* let { likes } = data
-    const submittedData = {
-      ...data,
-      likes: Number(likes),
-      tags: input.tags
-    }*/
     console.log('data that send :', data)
     onSubmit(data)
   }
@@ -214,7 +208,7 @@ function CreateUpdateModal({
                   {isAutocomplete &&
                     <CustomAutocomplete
                       name={name}
-                      value={input[name]}
+                      //value={input[name]}
                       options={optionList}
                       totalOptions={autocompleteHelper.getOptionPaginatedAutocomplete( optionList, 30, 3 )}
                       onOpen={handleOpenAutocomplete}
@@ -233,9 +227,8 @@ function CreateUpdateModal({
                           if (isEndOfScroll) handleScrollAutocomplete()
                         }
                       }}
-
                       renderInput={(params) => (
-                        <TextField 
+                        <TextField
                           {...params}
                           label={label}
                           {...register(name, validation)}
@@ -251,7 +244,7 @@ function CreateUpdateModal({
                       id="combo-box-demo"
                       name={name}
                       options={[]}
-                      value={input[name]}
+                      //value={input[name]}
                       multiple
                       getOptionLabel={(option) => {
                         return option
