@@ -16,11 +16,9 @@ export const creatorListOrDetailAction = async (
 ) => {
   try {
     const response = await serviceFunc(listOrDetailParams)
-
     if (!response) throw({ response })
 
     const { data } = response
-
     if (!data) throw({ response })
 
     return { 
@@ -28,7 +26,6 @@ export const creatorListOrDetailAction = async (
     }
   } catch (error) {
     const { response } = error
-
     if (!response) {
       return thunkAPI.rejectWithValue(response)
     }
@@ -67,7 +64,6 @@ export const creatorAddAction = async(
     if (!data) throw({ response })
 
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.successMessage(
         thunkAPI.dispatch,
@@ -79,7 +75,7 @@ export const creatorAddAction = async(
     } else {
       messageHelper.successMessage(
         thunkAPI.dispatch,
-        responseMessage,
+        'Success',
         successMessage,
         paramsTextPrimary,
         paramsTextSecondary,
@@ -89,7 +85,6 @@ export const creatorAddAction = async(
     return thunkAPI.fulfillWithValue(data)
   } catch (error) {
     const { response } = error
-
     if (!response) {
       messageHelper.serverInternalError(thunkAPI.dispatch)
       return thunkAPI.rejectWithValue(response)
@@ -97,7 +92,6 @@ export const creatorAddAction = async(
 
     const { data } = response
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
@@ -144,15 +138,12 @@ export const creatorUpdateAction = async(
 ) => {
   try {
     const response = await serviceFunc(bodyDataAction)
-
     if (!response) throw({ response })
 
     const { data } = response
-
     if (!data) throw({ response })
 
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.successMessage(
         thunkAPI.dispatch,
@@ -164,7 +155,7 @@ export const creatorUpdateAction = async(
     } else {
       messageHelper.successMessage(
         thunkAPI.dispatch,
-        responseMessage,
+        'Success',
         successMessage,
         paramsTextPrimary,
         paramsTextSecondary,
@@ -174,7 +165,6 @@ export const creatorUpdateAction = async(
     return thunkAPI.fulfillWithValue(data)
   } catch (error) {
     const { response } = error
-
     if (!response) {
       messageHelper.serverInternalError(thunkAPI.dispatch)
 
@@ -183,7 +173,6 @@ export const creatorUpdateAction = async(
 
     const { data } = response
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
@@ -230,15 +219,12 @@ export const creatorDeleteAction = async(
 ) => {
   try {
     const response = await serviceFunc(paramsDeleteAction)
-
     if (!response) throw({ response })
 
     const { data } = response
-
     if (!data) throw({ response })
 
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.successMessage(
         thunkAPI.dispatch,
@@ -250,7 +236,7 @@ export const creatorDeleteAction = async(
     } else {
       messageHelper.successMessage(
         thunkAPI.dispatch,
-        responseMessage,
+        'Success',
         successMessage,
         paramsTextPrimary,
         paramsTextSecondary,
@@ -260,7 +246,6 @@ export const creatorDeleteAction = async(
     return thunkAPI.fulfillWithValue(data)
   } catch (error) {
     const { response } = error
-
     if (!response) {
       messageHelper.serverInternalError(thunkAPI.dispatch)
 
@@ -268,9 +253,7 @@ export const creatorDeleteAction = async(
     }
 
     const { data } = response
-
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-
     if (!responseMessage) {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
