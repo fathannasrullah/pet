@@ -9,7 +9,6 @@ import { isEmpty } from 'lodash'
 import Table from '../components/Table/Table'
 import DeleteDataModal from './DeleteDataModal'
 import CreateUpdateModal from './CreateUpdateModal/CreateUpdateModal'
-import { FormProvider, useForm } from 'react-hook-form'
 import ImagePreviewModal from './ImagePreviewModal'
 
 function ListTableView({
@@ -62,7 +61,6 @@ function ListTableView({
   const [page, setPage] = useState(0)
   const [fetchType, setFetchType] = useState({ name: 'initial' })
   const [searchValue, setSearchValue] = useState('')
-  const [searchTimeout, setSearchTimeout] = useState(null)
   const [filter, setFilter] = useState({ filterKey: 'NONE' })
 
   const dispatch = useDispatch()
@@ -90,25 +88,6 @@ function ListTableView({
     })
   }
 
-  const handleSearchChange = (event, emptyValue) => {
-    clearTimeout(searchTimeout)
-    
-    setSearchValue(
-      typeof emptyValue === 'string'
-        ? emptyValue
-        : event.target.value
-    )
-
-    // debounce method
-    setSearchTimeout(
-      setTimeout(() => {
-        setPage(0)
-
-        handleFetchDataType('search')
-      }, 500)
-    )
-  }
-
   const handleNextPage = () => {
     handleFetchDataType('next-page')
   }
@@ -127,7 +106,7 @@ function ListTableView({
 
   const FILTERS = {
     NONE: (listWithPagination) => listWithPagination,
-    ALLSELECTED: (listWithoutPagination) => listWithoutPagination.filter(({ brand, category, price }) => 
+    /*ALLSELECTED: (listWithoutPagination) => listWithoutPagination.filter(({ brand, category, price }) => 
       categoriesAndBrandsSelected.includes(category) &&
       categoriesAndBrandsSelected.includes(brand) &&
       price >= minPriceSelected && price <= maxPriceSelected
@@ -142,7 +121,7 @@ function ListTableView({
             categoriesAndBrandsSelected.includes(category) &&
             price >= minPriceSelected && price <= maxPriceSelected
           : price >= minPriceSelected && price <= maxPriceSelected
-    )
+    )*/
   }
 
   const handleFetchList = useCallback(() => {
@@ -167,8 +146,9 @@ function ListTableView({
     if (fetchType.name === 'initial' || fetchType.name === 'next-page') dispatch(onFetchList({ ...param }))
 
     if (deleteDataSuccess) {
+      setPage(0)
       handleCloseDeleteModal()
-      dispatch(onFetchRefreshList({ ...param, page: currPage }))
+      dispatch(onFetchRefreshList({ ...param, page: 1 }))
     }
   }, [fetchType, deleteDataSuccess])
 
