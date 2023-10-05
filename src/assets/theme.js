@@ -92,6 +92,10 @@ export const theme = createTheme({
         root: ({ ownerState }) => ({
           border: `1px solid${purple.light[2]}`,
           color: purple.light[1],
+          '& .MuiInputBase-input.Mui-disabled': {
+            color: purple.light[3],
+            WebkitTextFillColor: purple.light[3]
+          },
           ...(!isEmpty(ownerState.value) && ownerState.value.length > 0
               ? {
                   opacity: 1,
@@ -117,6 +121,15 @@ export const theme = createTheme({
             color: purple.light[2]
           })
         })*/
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root.Mui-disabled': {
+            color:'red'
+          }
+        }
       }
     },
     MuiCheckbox: {
