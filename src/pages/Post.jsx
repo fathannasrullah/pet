@@ -16,60 +16,6 @@ import {
 import ListTableView from '../components/ListTableView'
 import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCreateUpdatePost'
 
-const inputs = [
-  {
-    isAutocomplete: true,
-    label: 'Owner',
-    name: 'owner',
-    value: '',
-    validation: {
-      required: {
-        value: true,
-        message: 'required',
-      }
-    },
-  },
-  {
-    isInput: true,
-    isMultiline: true,
-    rows: 3,
-    label: 'Text',
-    name: 'text',
-    type: 'text',
-    value: '',
-    validation: {
-      required: {
-        value: true,
-        message: 'required',
-      },
-      maxLength: {
-        value: 50,
-        message: '50 characters max',
-      },
-    },
-  },
-  {
-    isInput: true,
-    label: 'Image URL',
-    name: 'image',
-    type: 'text',
-    value: ''
-  },
-  {
-    isInput: true,
-    label: 'Likes',
-    name: 'likes',
-    type: 'number',
-    value: 0
-  },
-  {
-    isAutocompleteTag: true,
-    label: 'Tags',
-    name: 'tags',
-    value: []
-  }
-]
-
 function Post() {
   const dispatch = useDispatch()
 
@@ -98,13 +44,13 @@ function Post() {
     setOpenCreateUpdatePost(true)
   }
 
-  const handleSubmit = (input) => {
-    console.log('login submitted: ', input)
+  const handleSubmit = (data) => {
+    console.log('login submitted: ', data)
     dispatch(
-      actionType === 'create' ? addPost(input) : updatePost(input)
+      actionType === 'create' ? addPost(data) : updatePost(data)
     )
   }
-  console.log('img selected :', selectedData)
+
   return (
     <main>
       <ListTableView
