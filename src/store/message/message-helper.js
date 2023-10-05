@@ -3,27 +3,16 @@ import { TYPE_MESSAGES, VARIANT_MESSAGES, messageConstants } from '../../utils/c
 import { setMessage } from './slice'
 
 const getMessageFromResponseData = (responseData) => {
-  const { CONTAINER_MESSAGE, TRANSLATION_MESSAGE } = messageConstants
-
-  if (!responseData[CONTAINER_MESSAGE]) {
-    // checking response data is string
-    // not an object or an array
+  if (!responseData.error) {
     if (typeof responseData !== 'object') return responseData
+    return responseData
+  }
+  // getting message from main response 
+  const message = responseData
+  // key object on message
+  const getKeysMessage = Object.keys(message)
 
-      return responseData[0]
-    }
-    // getting user message from main response container message
-    const userMessage = responseData[messageConstants.CONTAINER_MESSAGE]
-    // key object on user message
-    const getKeysUserMessage = Object.keys(userMessage)
-    // checking is keys message contained translation message
-    const isKeysMessageOnTranslationMessage = getKeysUserMessage.some(
-      userMsg => TRANSLATION_MESSAGE.includes(userMsg)
-    )
-    // search user message that provide translation and return them
-    if (isKeysMessageOnTranslationMessage) return userMessage
-
-    return getMessageFromResponseData(userMessage[getKeysUserMessage[0]])
+  return getMessageFromResponseData(message[getKeysMessage[0]])
 }
 
 const createMessage = (

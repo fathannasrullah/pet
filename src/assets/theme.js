@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material'
+import { isEmpty } from 'lodash'
 
 export const purple = {
   dark: {
@@ -79,6 +80,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           color: purple.light[3],
+          '&.MuiInputLabel-shrink': {
+            color: purple.light[2],
+            backgroundColor: purple.dark[2]
+          },
         }
       }
     },
@@ -87,25 +92,31 @@ export const theme = createTheme({
         root: ({ ownerState }) => ({
           border: `1px solid${purple.light[2]}`,
           color: purple.light[1],
-          /*...(!isEmpty(ownerState.value) && ownerState.value.length > 0
-              ? { opacity: 1 }
+          ...(!isEmpty(ownerState.value) && ownerState.value.length > 0
+              ? {
+                  opacity: 1,
+                  '&.MuiInputLabel-shrink': {
+                    color: purple.light[2],
+                    backgroundColor: purple.dark[2]
+                  },
+                }
               : {
-                  opacity: 0.5,
+                  opacity: 1,
                   ':hover': {
                     opacity: 1
                   },
                 }
-            )*/
+            )
         }),
       }
     },
     MuiSelect: {
       styleOverrides: {
-        select: ({ ownerState }) => ({
-          ...(ownerState.value.length > 0 && {
+        /*select: ({ ownerState }) => ({
+          ...(ownerState.value && ownerState.value.length > 0 && {
             color: purple.light[2]
           })
-        })
+        })*/
       }
     },
     MuiCheckbox: {

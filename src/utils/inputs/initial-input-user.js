@@ -4,6 +4,13 @@ export const initialInputUser = [
     label: 'Title',
     name: 'title',
     value: '',
+    defaultValue: '',
+    selectOptions: ['mr', 'mrs', 'miss'],
+    validation: {
+      required: {
+        value: false,
+      },
+    }
   },
   {
     isInput: true,
@@ -15,6 +22,10 @@ export const initialInputUser = [
       required: {
         value: true,
         message: 'required',
+      },
+      minLength: {
+        value: 2,
+        message: '2 characters min',
       },
     }
   },
@@ -28,6 +39,10 @@ export const initialInputUser = [
       required: {
         value: true,
         message: 'required',
+      },
+      minLength: {
+        value: 2,
+        message: '2 characters min',
       },
     }
   },
@@ -53,6 +68,11 @@ export const initialInputUser = [
     label: 'Picture URL',
     name: 'picture',
     type: 'text',
-    value: ''
+    value: '',
+    validation: {
+      required: {
+        value: false
+      }
+    }
   },
 ]

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { isEmpty } from 'lodash'
 
@@ -8,7 +8,8 @@ import {
   getRefreshUserList,
   deleteUser,
   addUser,
-  updateUser
+  updateUser,
+  getUserDetail
 } from '../store/user/action'
 import { generateInputCreateUpdateUser } from '../utils/inputs/generateInputCreateUpdateUser'
 import { userTableColumns } from '../utils/table-colums/user-table-columns'
@@ -22,6 +23,10 @@ import ListTableView from '../components/ListTableView'
 
 function User() {
   const dispatch = useDispatch()
+  const {
+    requestStatus,
+    [STATE_NAME.USER_DETAIL]: detailState
+  } = useSelector(state => state[STORE_NAME.USER])
 
   const [selectedData, setSelectedData] = useState(null)
   const [openDeletePost, setOpenDeletePost] = useState(false)
@@ -30,31 +35,48 @@ function User() {
   const [title, setTitle] = useState('add new user')
   const [actionType, setActionType] = useState('create')
 
+  const detailLoading = requestStatus === REQUEST_STATUS.USER_DETAIL_PENDING
+  const createUserLoading = requestStatus === REQUEST_STATUS.USER_CREATE_PENDING
+  const createUserSuccess = requestStatus === REQUEST_STATUS.USER_CREATE_SUCCESS
+  const updateUserLoading = requestStatus === REQUEST_STATUS.USER_UPDATE_PENDING
+  const updateUserSuccess = requestStatus === REQUEST_STATUS.USER_UPDATE_SUCCESS
+  const details = detailState
+  const userID = !isEmpty(selectedData) && selectedData.id
+  
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
   const handleOpenDeletePost = () => setOpenDeletePost(true)
   const handleCloseDeletePost = () => setOpenDeletePost(false)
   const handleGetDataSelected = (data) => setSelectedData(JSON.parse(data))
   const handleDeletePost = () => dispatch(deleteUser(selectedData.id))
-  const handleCloseCreateUpdatePost = () => setOpenCreateUpdatePost(false)
-
+  
   const handleSetTitleAndActionType = (title, actionType) => {
     setTitle(title)
     setActionType(actionType)
   }
   
   const handleOpenCreateUpdatePost = () => {
-    if (actionType === 'edit') handleSetTitleAndActionType('add new user', 'add')
     setOpenCreateUpdatePost(true)
   }
 
+  const handleCloseCreateUpdatePost = () => {
+    if (actionType === 'edit') handleSetTitleAndActionType('add new user', 'create')
+    setOpenCreateUpdatePost(false)
+    if (createUserSuccess || updateUserSuccess) dispatch(getUserList())
+  }
+  
   const handleSubmit = (input) => {
-    console.log('login submitted: ', input)
+    console.log('data submitted: ', input)
     dispatch(
       actionType === 'create' ? addUser(input) : updateUser(input)
     )
   }
   
+  useEffect(() => {
+    !isEmpty(userID) && dispatch(getUserDetail(userID))
+  }, [userID, dispatch])
+
+  console.log('create status :', requestStatus)
   return (
     <main>
       <ListTableView
@@ -84,7 +106,13 @@ function User() {
         openCreateUpdateModal={openCreateUpdatePost}
         title={title}
         actionType={actionType}
-        inputs={generateInputCreateUpdateUser(actionType, selectedData)}
+        details={details}
+        detailLoading={detailLoading}
+        createDataLoading={createUserLoading}
+        createDataSuccess={createUserSuccess}
+        updateDataLoading={updateUserLoading}
+        updateDataSuccess={updateUserSuccess}
+        inputs={generateInputCreateUpdateUser(actionType, details)}
         handleOpenCreateUpdateModal={handleOpenCreateUpdatePost}
         handleSetTitleAndActionType={handleSetTitleAndActionType}
         handleCloseCreateUpdateModal={handleCloseCreateUpdatePost}

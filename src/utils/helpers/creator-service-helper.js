@@ -61,7 +61,7 @@ export const creatorSearchService = async(endpoint, value, endURL) => {
  * async function for get detail data
  */
 export const creatorDetailService = async(endpoint, ID) => {
-  if (!APP_ID || ID) return null
+  if (!APP_ID || !ID) return null
 
   const endpointWithID = `${endpoint}/${ID}`
   
@@ -111,7 +111,7 @@ export const creatorUpdateService = async (endpoint, ID, bodyUpdateData, general
 
   const endpointWithID = `${endpoint}/${ID}`
 
-  if (typeof generalizeData === 'function') bodyUpdateData = generalizeData(bodyUpdateData)
+  //if (typeof generalizeData === 'function') bodyUpdateData = generalizeData(bodyUpdateData)
 
   return await axios({
     method: 'PUT',

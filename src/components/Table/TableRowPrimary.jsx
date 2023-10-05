@@ -8,7 +8,7 @@ function TableRowPrimary({
   row,
   columns,
   listIsLoading,
-
+  
   handleOpenDeleteModal,
   handleOpenImagePreviewModal,
   handleGetDataSelected,
@@ -20,8 +20,8 @@ function TableRowPrimary({
 
     if (name === 'delete') handleOpenDeleteModal()
     if (name === 'edit') {
-      handleOpenCreateUpdateModal()
       handleSetTitleAndActionType('edit', 'edit')
+      handleOpenCreateUpdateModal()
     }
 
     handleGetDataSelected(value)

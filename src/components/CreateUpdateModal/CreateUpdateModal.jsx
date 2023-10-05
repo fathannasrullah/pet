@@ -1,28 +1,34 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 
-import { Dialog, DialogTitle, DialogContent, TextField, Typography, Button, Autocomplete, Grid, DialogActions, Select, IconButton, MenuItem, ListItemText, ListItemIcon } from '@mui/material'
+import { DialogContent, TextField, Typography, Button, Autocomplete, Grid, DialogActions, Select, IconButton, MenuItem, ListItemText, ListItemIcon, InputLabel, FormControl, CircularProgress, Box } from '@mui/material'
 
-import { StyledDialogTitle, StyledFormControl } from './styles'
-import { useDispatch, useSelector } from "react-redux";
-import CustomAutocomplete from "../CustomAutocomplete/CustomAutocomplete";
-import autocompleteHelper from "../../utils/helpers/autocomplete-helper";
-import { createFilterOptions } from "../CustomAutocomplete/useCustomAutocomplete";
-import { FormProvider, useForm } from "react-hook-form";
-import { useFormContext } from 'react-hook-form'
+import { StyledDialog, StyledDialogTitle, StyledFormControl } from './styles'
+import { useDispatch, useSelector } from "react-redux"
+import CustomAutocomplete from "../CustomAutocomplete/CustomAutocomplete"
+import autocompleteHelper from "../../utils/helpers/autocomplete-helper"
+import { createFilterOptions } from "../CustomAutocomplete/useCustomAutocomplete"
+import { FormProvider, useForm } from "react-hook-form"
 import { AnimatePresence, motion } from 'framer-motion'
-
+import CloseIcon from '@mui/icons-material/Close'
 import ErrorIcon from '@mui/icons-material/Error'
-import { findInputError, isFormInvalid } from "../../utils/helpers/validation-helper";
+import { findInputError, isFormInvalid } from "../../utils/helpers/validation-helper"
+import { isEmpty } from "lodash"
 
 const prepareInput = (inputs) => {
-  return inputs.reduce((obj, key) => ({...obj, [key.name]: key.value}), {})
+  return inputs.reduce((obj, currObj) => ({ ...obj, [currObj.name]: currObj.value }), {})
 }
 
 function CreateUpdateModal({
   title,
+  actionType,
   inputs,
-  btnText,
   open,
+  details,
+  detailLoading,
+  createDataLoading,
+  createDataSuccess,
+  updateDataLoading,
+  updateDataSuccess,
   storeNameForAutocomplete,
   stateNameForAutocomplete,
   getAutocompleteList,
@@ -47,12 +53,13 @@ function CreateUpdateModal({
 
   const filter = createFilterOptions()
   const methods = useForm()
-
+  
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm()
+    reset
+  } = useForm({ defaultValues: initialInput })
 
   const {
     data: optionList = [],
@@ -60,14 +67,14 @@ function CreateUpdateModal({
     total
   } = listState
   
-  const handleChangeInput = (event) => {
+  /*const handleInputChange = (event) => {
     const { name, value } = event.target
     
     setInput(prevInput => ({
       ...prevInput,
       [name]: value
     }))
-  }
+  }*/
   
   const handleAutocompleteChange = (event, name, value) => {
     event.preventDefault()
@@ -91,37 +98,59 @@ function CreateUpdateModal({
   }
 
   const handleSubmitForm = (data) => {
-    let { likes } = data
+   /* let { likes } = data
     const submittedData = {
       ...data,
       likes: Number(likes),
       tags: input.tags
-    }
-    console.log('data :', data)
-    
-    onSubmit(submittedData)
+    }*/
+    onSubmit(data)
   }
-
-  console.log('input  :', input)
-  
-  const optionsForSelect = [
-    {
-      name: 'Mr'
-    },
-    {
-      name: 'Mrs'
-    },
-    {
-      name: 'Miss'
+   
+  useEffect(() => {
+    reset(initialInput)
+    if (createDataSuccess || updateDataSuccess && !isEmpty(initialInput)) {
+      reset(initialInput)
+      handleCloseCreateUpdateModal()
     }
-  ]
+  }, [reset, initialInput, createDataSuccess, updateDataSuccess])
+
+  //const optionsForSelect = ['mr', 'mrs', 'miss']
+
+  if (actionType === 'edit' && isEmpty(details)) {
+    return (
+      <StyledDialog
+        open={open}
+        onClose={handleCloseCreateUpdateModal}
+      >
+        <DialogContent>
+          <StyledDialogTitle>
+            <IconButton onClick={handleCloseCreateUpdateModal}>
+              <CloseIcon />
+            </IconButton>
+          </StyledDialogTitle>
+          <Grid container
+            justifyContent='center'
+            alignItems='center'
+          >
+            <CircularProgress />
+          </Grid>
+        </DialogContent>
+      </StyledDialog>
+      )
+    }
 
   return (
-    <Dialog
+    <StyledDialog
       open={open}
       onClose={handleCloseCreateUpdateModal}
     >
-      <StyledDialogTitle>{title}</StyledDialogTitle>
+      <StyledDialogTitle>
+        <IconButton onClick={handleCloseCreateUpdateModal}>
+          <CloseIcon />
+        </IconButton>
+        {title}
+      </StyledDialogTitle>
       <DialogContent>
         <FormProvider {...methods}>
 
@@ -140,49 +169,53 @@ function CreateUpdateModal({
             name,
             type,
             value,
+            defaultValue,
+            selectOptions,
             maxLength,
             validation
           }, index) => {
-            /*const {
-              register,
-              formState: { errors },
-            } = useFormContext()*/
-          
             const inputErrors = findInputError(errors, name)
             const isInvalid = isFormInvalid(inputErrors)
-          
+            
             return (
               <Fragment key={index}>
-                <AnimatePresence mode="wait" initial={false}>
-                  {isInvalid && (
-                    <InputError
-                      message={inputErrors.error.message}
-                      key={inputErrors.error.message}
-                    />
-                  )}
-                </AnimatePresence>
                 <StyledFormControl>
-                  {/*
+                  <AnimatePresence mode='wait' initial={false}>
+                    {isInvalid && (
+                      <InputError
+                        message={inputErrors.error.message}
+                        key={inputErrors.error.message}
+                      />
+                    )}
+                  </AnimatePresence>
+                  
                   {isSelect &&
-                    <Select
-                      name={name}
-                      value={input[value]}
-                      label='Title'
-                    >
-                    {optionsForSelect && optionsForSelect.map((option, index) => (
-                      <MenuItem key={index} value={option.name}>
-                        <ListItemText primary={option.name} />
-                      </MenuItem>
-                      ))
-                    }
-                    </Select>
+                    <FormControl fullWidth>
+                      <InputLabel>{label}</InputLabel>
+                      <Select
+                        name={name}
+                        label={label}
+                        defaultValue={defaultValue}
+                        {...register(name, validation)}
+                        inputProps={{
+                          inputRef: (ref) => {
+                            if (!ref) return
+                          },
+                        }}
+                      >
+                      {selectOptions.map((option, index) => (
+                        <MenuItem key={index} value={option}>{option}</MenuItem>
+                        ))
+                      }
+                      </Select>
+                    </FormControl>
                   }
-                  */}
+                  
 
                   {isAutocomplete &&
                     <CustomAutocomplete
                       name={name}
-                      value={input[value]}
+                      value={input[name]}
                       options={optionList}
                       totalOptions={autocompleteHelper.getOptionPaginatedAutocomplete( optionList, 30, 3 )}
                       onOpen={handleOpenAutocomplete}
@@ -210,9 +243,7 @@ function CreateUpdateModal({
                         />
                       )}
                       {...register(name, validation)}
-                      /*PopperComponent={(props) => (
-                       <Popper {...props} sx={{ backgroundColor: 'red' }} />
-                      )}*/
+                      
                     />
                   }
               
@@ -221,12 +252,11 @@ function CreateUpdateModal({
                       id="combo-box-demo"
                       name={name}
                       options={[]}
-                      value={input[value]}
+                      value={input[name]}
                       multiple
                       getOptionLabel={(option) => {
                         return option
                       }}
-                      style={{ width: 300 }}
                       inputValue={tagName}
                       renderInput={(params) => (
                         <TextField
@@ -281,7 +311,6 @@ function CreateUpdateModal({
                           default:
                             break
                         }
-                        console.log('tahs :', value)
                         setInput(prevInput => ({ ...prevInput, [name]: value }))
                       }}
                       freeSolo
@@ -304,8 +333,8 @@ function CreateUpdateModal({
                       multiline={isMultiline}
                       rows={rows}
                       type={type}
-                      value={input[value]}
-                      onChange={(event) => handleChangeInput(event)}
+                      //value={input[name]}
+                      //onChange={onChange}
                       fullWidth
                       variant='outlined'
                       inputProps={{
@@ -329,6 +358,7 @@ function CreateUpdateModal({
               cancel
             </Button>
             <Button
+              disabled={createDataLoading || updateDataLoading}
               type='submit'
               variant='contained'
             >
@@ -339,19 +369,19 @@ function CreateUpdateModal({
 
         </FormProvider>
       </DialogContent>
-    </Dialog>
+    </StyledDialog>
   )
 }
 
 const InputError = ({ message }) => {
   return (
-    <Grid justifyContent='flex-end' color='red' container>
+    <Grid justifyContent='flex-end' sx={{ color: 'red', marginBottom: '5px' }} container>
       <motion.div
         {...framer_error}
       >
-        <Grid justifyContent='flex-end' alignItems='center' container>
+        <Grid justifyContent='flex-end' alignItems='center' gap={0.5} container>
           <ErrorIcon />
-          <Typography fontSize='11px'>{message}</Typography>
+          <Typography fontSize='12px'>{message}</Typography>
         </Grid>
       </motion.div>
     </Grid>

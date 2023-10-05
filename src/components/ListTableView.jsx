@@ -45,6 +45,12 @@ function ListTableView({
   actionType,
   inputs,
   btnText,
+  details,
+  detailLoading,
+  createDataLoading,
+  createDataSuccess,
+  updateDataLoading,
+  updateDataSuccess,
   storeNameForAutocomplate,
   stateNameForAutocomplete,
   getAutocompleteList,
@@ -172,7 +178,7 @@ function ListTableView({
 
   const filterFunction = FILTERS[filter.filterKey]
   const filteredList = filterFunction(list)
-  console.log('selecteddata :', selectedData)
+
   return (
     <>
       <Grid spacing={2} container>
@@ -223,12 +229,20 @@ function ListTableView({
         />
       }
       
-      {openCreateUpdateModal &&
+      {
+      //((actionType === 'edit' && !isEmpty(details) && openCreateUpdateModal) || (actionType === 'create' && openCreateUpdateModal)) 
+      openCreateUpdateModal &&
         <CreateUpdateModal
           title={title}
           actionType={actionType}
           open={openCreateUpdateModal}
+          detailLoading={detailLoading}
+          createDataLoading={createDataLoading}
+          createDataSuccess={createDataSuccess}
+          updateDataLoading={updateDataLoading}
+          updateDataSuccess={updateDataSuccess}
           inputs={inputs}
+          details={details}
           btnText={btnText}
           storeNameForAutocomplete={storeNameForAutocomplate}
           stateNameForAutocomplete={stateNameForAutocomplete}

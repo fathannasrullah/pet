@@ -10,7 +10,7 @@ const initialState = {
   code: '',
   variant: '',
   isShowingImage: false,
-  isShow: false,
+  isShowMessage: false,
   typeMessage: TYPE_MESSAGES.DIALOG
 }
 
@@ -22,7 +22,7 @@ const messageSlice = createSlice({
       return {
         ...state,
         ...action.payload,
-        isShow: true,
+        isShowMessage: true,
       }
     },
     clearMessage: () => {

@@ -27,7 +27,7 @@ function Table({
   basePath,
   listIsLoading,
   onPageChange,
-
+  
   handleGetDataSelected,
   handleOpenImagePreviewModal,
   handleOpenDeleteModal,

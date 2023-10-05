@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { creatorAddAction, creatorDeleteAction, creatorListOrDetailAction, creatorUpdateAction } from '../../utils/helpers/creator-action-helper'
 import { STATE_NAME } from '../../utils/constant'
 
-import { addUserService, deleteUserService, getUserListService, updateUserService } from '../../services/user'
+import { addUserService, deleteUserService, getUserDetailService, getUserListService, updateUserService } from '../../services/user'
 
 export const getUserList = createAsyncThunk(
   'user/list',
@@ -33,6 +33,20 @@ export const getRefreshUserList = createAsyncThunk(
   }
 )
 
+export const getUserDetail = createAsyncThunk(
+  'user/detail',
+  async (detailID, thunkAPI) => {
+    return (
+      await creatorListOrDetailAction(
+        thunkAPI,
+        detailID,
+        getUserDetailService,
+        STATE_NAME.USER_DETAIL
+      )
+    )
+  }
+)
+
 export const addUser = createAsyncThunk(
   'user/add',
   async (addBody, thunkAPI) => {
@@ -41,8 +55,8 @@ export const addUser = createAsyncThunk(
         thunkAPI,
         addBody,
         addUserService,
-        'success.add.user',
-        'error.add.user',
+        'Successfull Add User',
+        'Failed Add User'
       )
     )
   }
@@ -56,9 +70,8 @@ export const updateUser = createAsyncThunk(
         thunkAPI,
         updateBody,
         updateUserService,
-        'success.update.user',
-        'error.update.user',
-        {}, {},
+        'Successfull Update User',
+        'Failed Update User'
       )
     )
   }
@@ -72,9 +85,8 @@ export const deleteUser = createAsyncThunk(
         thunkAPI,
         deleteParams,
         deleteUserService,
-        'success.delete.user',
-        'error.delete.user',
-        {}, {},
+        'Successfull Delete User',
+        'Failed Delete User'
       )
     )
   }

@@ -19,7 +19,9 @@ export const STORE_NAME = {
 /* Global State Name */
 export const STATE_NAME = {
   USER_LIST: 'userListState',
+  USER_DETAIL: 'userDetailState',
   POST_LIST: 'postListState',
+  POST_DETAIL: 'postDetailState',
   HOME_LIST: 'homeListState'
 }
 
@@ -34,6 +36,10 @@ export const REQUEST_STATUS = {
   USER_LIST_PENDING: 'user-list-pending',
   USER_LIST_SUCCESS: 'user-list-success',
   USER_LIST_FAILED: 'user-list-failed',
+  /* User detail */
+  USER_DETAIL_PENDING: 'user-detail-pending',
+  USER_DETAIL_SUCCESS: 'user-detail-success',
+  USER_DETAIL_FAILED: 'user-detail-failed',
   /* User Create */
   USER_CREATE_PENDING: 'user-create-pending',
   USER_CREATE_SUCCESS: 'user-create-success',
@@ -50,6 +56,10 @@ export const REQUEST_STATUS = {
   POST_LIST_PENDING: 'post-list-pending',
   POST_LIST_SUCCESS: 'post-list-success',
   POST_LIST_FAILED: 'post-list-failed',
+  /* Post Detail */
+  POST_DETAIL_PENDING: 'post-detail-pending',
+  POST_DETAIL_SUCCESS: 'post-detail-success',
+  POST_DETAIL_FAILED: 'post-detail-failed',
   /* Post Create */
   POST_CREATE_PENDING: 'post-create-pending',
   POST_CREATE_SUCCESS: 'post-create-success',
@@ -61,25 +71,22 @@ export const REQUEST_STATUS = {
   /* Post Delete */
   POST_DELETE_PENDING: 'post-delete-pending',
   POST_DELETE_SUCCESS: 'post-delete-success',
-  POST_DELETE_FAILED: 'post-delete-failed',
+  POST_DELETE_FAILED: 'post-delete-failed'
   
 }
 
 /* All Message */
 export const messageConstants = {
-  'CONTAINER_MESSAGE': 'userMessage',
-  'TRANSLATION_MESSAGE': [
-    'ID', 'EN'
-  ]
+  'CONTAINER_MESSAGE': 'data'
 }
 
 export const VARIANT_MESSAGES = {
   ERROR: 'error',
   FORBIDDEN: 'forbidden',
-  SUCCESS: 'success',
+  SUCCESS: 'success'
 }
 
 export const TYPE_MESSAGES = {
   DIALOG: 'dialog',
-  SNACKBAR: 'snackbar',
+  SNACKBAR: 'snackbar'
 }

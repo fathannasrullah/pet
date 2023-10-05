@@ -61,11 +61,9 @@ export const creatorAddAction = async(
 ) => {
   try {
     const response = await serviceFunc(bodyDataAction)
-    
     if (!response) throw({ response })
 
-    const { data } = response.data
-
+    const { data } = response
     if (!data) throw({ response })
 
     const responseMessage = messageHelper.getMessageFromResponseData(data)
@@ -94,7 +92,6 @@ export const creatorAddAction = async(
 
     if (!response) {
       messageHelper.serverInternalError(thunkAPI.dispatch)
-      
       return thunkAPI.rejectWithValue(response)
     }
 
