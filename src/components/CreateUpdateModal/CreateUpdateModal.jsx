@@ -102,7 +102,7 @@ function CreateUpdateModal({
     console.log('data that send :', data)
     onSubmit(data)
   }
-  console.log('initialinput :', initialInput)
+
   useEffect(() => {
     reset(initialInput)
 
@@ -209,57 +209,46 @@ function CreateUpdateModal({
                   
 
                   {isAutocomplete &&
-
-
-<Controller
-control={control}
-name={name}
-rules={validation}
-render={({ field: { onChange, value } }) => (
-                    <CustomAutocomplete
-                      //name={name}
-                      disabled={actionType === 'edit'}
-                      value={value}
-                      options={optionList}
-                      totalOptions={autocompleteHelper.getOptionPaginatedAutocomplete( optionList, 30, 3 )}
-                      onOpen={handleOpenAutocomplete}
-                      getOptionLabel={(option) => option ? `${option.firstName} ${option.lastName}` : ''}
-                      //isOptionEqualToValue={(option, value) => option.id === value.id}
-                      //isOptionEqualToValue={(option, value) => autocompleteHelper.isOptionEqualToValue(option, value, 'id')}
-                      //onChange={(event, currValue) => handleAutocompleteChange(event, name, currValue)}
-                      isOptionEqualToValue={(option, value) =>
-                        value === undefined || value === '' || option.id === value.id
-                        
-                      }
-                      onChange={(event, option) => {
-                        event.preventDefault()
-                        onChange(option)
-                      }}
-                      autoHighlight={true}
-                      isPaginated={true}
-                      ListboxProps={{
-                        onScroll: (event) => {
-                          // i need scroll into bottom view when api was hitted
-                          const { offsetHeight, scrollHeight, scrollTop } = event.target
-                          const amountOffsetHeightScrollTop = Math.round(offsetHeight + scrollTop)
-                          const isEndOfScroll = amountOffsetHeightScrollTop === scrollHeight
+                    <Controller
+                      control={control}
+                      name={name}
+                      rules={validation}
+                      render={({ field: { onChange, value } }) => (
+                        <CustomAutocomplete
+                          disabled={actionType === 'edit'}
+                          value={value}
+                          options={optionList}
+                          totalOptions={autocompleteHelper.getOptionPaginatedAutocomplete( optionList, 30, 3 )}
+                          onOpen={handleOpenAutocomplete}
+                          getOptionLabel={(option) => option ? `${option.firstName} ${option.lastName}` : ''}
+                          isOptionEqualToValue={(option, value) =>
+                            value === undefined || value === '' || option.id === value.id
+                          }
+                          onChange={(event, option) => {
+                            event.preventDefault()
+                            onChange(option)
+                          }}
+                          autoHighlight={true}
+                          isPaginated={true}
+                          ListboxProps={{
+                            onScroll: (event) => {
+                              // i need scroll into bottom view when api was hitted
+                              const { offsetHeight, scrollHeight, scrollTop } = event.target
+                              const amountOffsetHeightScrollTop = Math.round(offsetHeight + scrollTop)
+                              const isEndOfScroll = amountOffsetHeightScrollTop === scrollHeight
           
-                          if (isEndOfScroll) handleScrollAutocomplete()
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={label}
-                          //{...register(name, validation)}
+                              if (isEndOfScroll) handleScrollAutocomplete()
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label={label}
+                            />
+                          )}
                         />
                       )}
-                      //{...register(name, validation)}
-                      
                     />
-)}
-/>
-
                   }
               
                   {isAutocompleteTag &&
