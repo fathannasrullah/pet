@@ -13,8 +13,9 @@ function App() {
   const dispatch = useDispatch()
   const {
     isShowMessage,
+    variant,
     primaryText,
-    secondaryText
+    secondaryText,
   } = useSelector((state) => state[STORE_NAME.MESSAGE])
 
   const handleCloseMessage = () => dispatch(clearMessage())
@@ -32,6 +33,7 @@ function App() {
       {isShowMessage &&
         <MessageSnackbar 
           openMessage={isShowMessage}
+          variant={variant}
           primaryText={primaryText}
           secondaryText={secondaryText}
           handleCloseMessage={handleCloseMessage}

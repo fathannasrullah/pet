@@ -1,7 +1,13 @@
 import { Alert, AlertTitle, Snackbar } from '@mui/material'
 import { useState } from 'react'
 
-function MessageSnackbar({ openMessage, primaryText, secondaryText, handleCloseMessage }) {
+function MessageSnackbar({
+  openMessage,
+  variant,
+  primaryText,
+  secondaryText,
+  handleCloseMessage
+}) {
   const [state, setState] = useState({
     vertical: 'top',
     horizontal: 'right',
@@ -18,7 +24,7 @@ function MessageSnackbar({ openMessage, primaryText, secondaryText, handleCloseM
       onClose={handleCloseMessage}
       key={vertical + horizontal}
     >
-      <Alert onClose={handleCloseMessage} severity='success' sx={{ width: '100%' }}>
+      <Alert onClose={handleCloseMessage} severity={variant} sx={{ width: '100%' }}>
         <AlertTitle>
           <strong>
             {showingPrimaryText}
