@@ -1,24 +1,14 @@
 import { Alert, AlertTitle, Snackbar } from '@mui/material'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { STORE_NAME } from '../utils/constant'
 
-function MessageSnackbar() {
-  const {
-    isShowMessage,
-    variant,
-    primaryText,
-    secondaryText,
-    paramsTextSecondary,
-  } = useSelector((state) => state[STORE_NAME.MESSAGE])
+function MessageSnackbar({ openMessage, primaryText, secondaryText }) {
   const messageText = 'message text'
 
   const [state, setState] = useState({
-    open: isShowMessage,
+    open: openMessage,
     vertical: 'top',
     horizontal: 'right',
   })
-
   const { vertical, horizontal, open } = state
 
   const handleClose = () => {
@@ -26,7 +16,7 @@ function MessageSnackbar() {
   }
 
   const showingPrimaryText = typeof primaryText === 'object' ? messageText : primaryText
-  console.log('message here : ', primaryText, isShowMessage)
+
   return (
     <Snackbar
       anchorOrigin={{ vertical, horizontal }}
