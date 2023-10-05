@@ -163,12 +163,10 @@ function CreateUpdateModal({
             label,
             name,
             type,
-            value,
+            placeholder,
             defaultValue,
             selectOptions,
-            maxLength,
             validation,
-            onChange
           }, index) => {
             const inputErrors = findInputError(errors, name)
             const isInvalid = isFormInvalid(inputErrors)
@@ -244,6 +242,7 @@ function CreateUpdateModal({
                             <TextField
                               {...params}
                               label={label}
+                              placeholder={placeholder}
                             />
                           )}
                         />
@@ -252,98 +251,55 @@ function CreateUpdateModal({
                   }
               
                   {isAutocompleteTag &&
-                    <Autocomplete
-                      id="combo-box-demo"
+                    <Controller
+                      control={control}
                       name={name}
-                      multiple
-                      options={[]}
-                      //value={input[name]}
-                      defaultValue={[ 'type first then enter' ]}
-                      getOptionLabel={(option) => {
-                        return option
-                      }}
-                      //inputValue={tagName}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={label}
+                      rules={validation}
+                      render={({ field: { onChange, value } }) => (
+                        <Autocomplete
+                          id="combo-box-demo"
                           name={name}
-                          variant="outlined"
-                          //{...register(name, validation)}
+                          multiple
+                          options={[]}
+                          value={value}
+                          defaultValue={[ 'type first then enter' ]}
+                          
+                          getOptionLabel={(option) => option}
+                          onChange={(event, option) => {
+                            event.preventDefault()
+                            onChange(option)
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label={label}
+                              placeholder={placeholder}
+                            />
+                          )}
+                          freeSolo
+                          selectOnFocus
+                          handleHomeEndKeys
+                          filterOptions={(options, params) => {
+                            const filtered = filter(options, params)
+                    
+                            if (params.inputValue !== "") filtered.concat(params.inputValue)
+                            return filtered
+                          }}
                         />
                       )}
-                      /*onInputChange={(event, value) => {
-                        event.preventDefault()
-                        setTagName(value)
-                      }}*/
-                      /*
-                      onClose={(event, reason) => {
-                        event.preventDefault()
-                          if (reason === "blur") {
-                          setSelectedTag(null);
-                        }
-                      }}*/
-                      
-                      onChange={(event, value, reason) => {
-                        event.preventDefault()
-                    
-                        switch (reason) {
-                          case "clear":
-                            setInput(prevInput => ({ ...prevInput, [name]: [] }))
-                            break
-                          case "remove-option":
-                            setInput(prevInput => ({ ...prevInput, [name]: value }))
-                            break
-                          case "select-option":
-                            const lastItem = value[value.length - 1];
-                            if (typeof lastItem === "string") {
-                              setSelectedTag(null);
-                              break
-                            }
-                            if (!!lastItem.type) {
-                              setSelectedAddTag(lastItem)
-                              break
-                            }
-                            const isExists = input[name].some(
-                              (tagItem) => tagItem.id === lastItem.id
-                            )
-                            if (isExists) {
-                              setSelectedTag(null)
-                            } else {
-                              setSelectedTag(lastItem)
-                              setInput(prevInput => ({ ...prevInput, [name]: value }))
-                            }
-                            break
-                          default:
-                            break
-                        }
-                        setInput(prevInput => ({ ...prevInput, [name]: value }))
-                      }}
-                      freeSolo
-                      selectOnFocus
-                      handleHomeEndKeys
-                      filterOptions={(options, params) => {
-                        const filtered = filter(options, params)
-                    
-                        if (params.inputValue !== "") filtered.concat(params.inputValue)
-                        return filtered
-                      }}
-                      //{...register(name, validation)}
-                   />
+                    />
                   }
 
                   {isInput &&
                     <TextField
                       label={label}
                       name={name}
+                      placeholder={placeholder}
                       multiline={isMultiline}
                       rows={rows}
                       type={type}
                       fullWidth
                       variant='outlined'
-                      /*inputProps={{
-                        maxLength: maxLength,
-                      }}*/
                       {...register(name, validation)}
                    />
                   }

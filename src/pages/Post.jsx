@@ -52,12 +52,12 @@ function Post() {
   }
 
   const handleSubmit = (data) => {
-    console.log('login submitted: ', data)
     const submittedData = {
       ...data,
       owner: data.owner.id
     }
-
+    
+    console.log('data submitted: ', submittedData)
     dispatch(
       actionType === 'create' ? addPost(submittedData) : updatePost(submittedData)
     )

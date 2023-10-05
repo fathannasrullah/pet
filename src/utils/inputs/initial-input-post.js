@@ -8,6 +8,7 @@ export const initialInputPost = [
       label: 'Owner',
       name: 'owner',
       value: '',
+      placeholder: 'Choose owner',
       validation: {
         required: {
           value: true,
@@ -24,6 +25,7 @@ export const initialInputPost = [
       name: 'text',
       type: 'text',
       value: '',
+      placeholder: 'Type what you want to post',
       validation: {
         required: {
           value: true,
@@ -45,6 +47,7 @@ export const initialInputPost = [
       name: 'image',
       type: 'text',
       value: '',
+      placeholder: 'Type your image url link',
       validation: {
         required: {
           value: false
@@ -56,7 +59,8 @@ export const initialInputPost = [
       label: 'Likes',
       name: 'likes',
       type: 'number',
-      value: 0,
+      value: '',
+      placeholder: 'Give your likes',
       validation: {
         required: {
           value: false
@@ -69,6 +73,7 @@ export const initialInputPost = [
       label: 'Tags',
       name: 'tags',
       value: [],
+      placeholder: 'Type your tags then press enter',
       validation: {
         required: {
           value: false
