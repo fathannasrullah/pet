@@ -6,10 +6,11 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Navigation from '../Navigation/Navigation'
 
 import { StyledAppBar, StyledIconButton } from './styles'
+import HideOnScroll from '../HideOnScroll'
 
 const drawerWidth = 240
 
-function AppBar() {
+function AppBar(props) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
@@ -18,19 +19,21 @@ function AppBar() {
 
   return (
     <>
-      <StyledAppBar>
-        <Toolbar>
-          <StyledIconButton
-            aria-label='open navigation'
-            edge='start'
-            onClick={handleDrawerToggle}
-          >
-            <MenuIcon />
-          </StyledIconButton>
+      <HideOnScroll {...props}>
+        <StyledAppBar>
+          <Toolbar>
+            <StyledIconButton
+              aria-label='open navigation'
+              edge='start'
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </StyledIconButton>
           
-          <Grid container justifyContent='center'><Button></Button></Grid>
-        </Toolbar>
-      </StyledAppBar>
+            <Grid container justifyContent='center'><Button></Button></Grid>
+          </Toolbar>
+        </StyledAppBar>
+      </HideOnScroll>
       <Navigation
         drawerWidth={drawerWidth} 
         handleDrawerToggle={handleDrawerToggle}

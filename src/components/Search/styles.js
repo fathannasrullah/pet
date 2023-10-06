@@ -6,10 +6,16 @@ export const StyledForm = styled('form')(() => ({
 }))
 
 export const StyledSearchContainer = styled('div')(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
+  zIndex: 1100,
+  position: 'fixed',
+  top: '12px',
   [theme.breakpoints.up(1023)]: {
     width: '50%'
+  },
+  [theme.breakpoints.down(1023)]: {
+    width: '100',
+    left: '50px',
+    right: '15px',
   }
 }))
 
