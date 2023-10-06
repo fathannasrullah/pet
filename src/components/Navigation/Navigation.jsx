@@ -1,23 +1,22 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   List,
   ListItem,
   ListItemIcon,
   ListItemText
 } from '@mui/material'
-
 import { navigation } from '../../utils/navigation'
-
 import { StyledDrawerPermanent, StyledDrawerTemporary, StyledListItemButton, StyledNavigation } from './styles'
 
 function Navigation({ handleDrawerToggle, mobileOpen }) {
-  const currLocation = useLocation()
-  const selectedPath = currLocation.pathname
+  //const currLocation = useLocation()
+  const [menuSelected, setMenuSelected] = useState('')
   const navigate = useNavigate()
-
-  const handleNavigateTo = (path) => {
-    navigate(path)
+  
+  const handleNavigateTo = (pathName, menuName) => {
+    setMenuSelected(menuName)
+    navigate(pathName)
     mobileOpen == true && handleDrawerToggle()
   }
   
@@ -27,8 +26,8 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
         <>
           <ListItem key={index} disablePadding>
             <StyledListItemButton
-              onClick={() => handleNavigateTo(path)}
-              selected={path === selectedPath}
+              onClick={() => handleNavigateTo(path, name)}
+              selected={name === menuSelected}
             >
               <ListItemIcon>
                 <Icon />
