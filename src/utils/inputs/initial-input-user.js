@@ -12,7 +12,8 @@ export const initialInputUser = [
     selectOptions: ['mr', 'mrs', 'miss'],
     validation: {
       required: {
-        value: false,
+        value: true,
+        message: 'required'
       },
     }
   },
@@ -27,10 +28,10 @@ export const initialInputUser = [
         value: true,
         message: 'required',
       },
-      minLength: {
+      /*minLength: {
         value: 2,
         message: '2 characters min',
-      },
+      },*/
     }
   },
   {
@@ -44,10 +45,10 @@ export const initialInputUser = [
         value: true,
         message: 'required',
       },
-      minLength: {
+      /*minLength: {
         value: 2,
         message: '2 characters min',
-      },
+      },*/
     }
   },
   {

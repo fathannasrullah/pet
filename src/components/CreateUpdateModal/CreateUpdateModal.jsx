@@ -186,22 +186,28 @@ function CreateUpdateModal({
                   {isSelect &&
                     <FormControl fullWidth>
                       <InputLabel>{label}</InputLabel>
-                      <Select
+                      <Controller
+                        control={control}
                         name={name}
-                        label={label}
-                        defaultValue={defaultValue}
-                        {...register(name, validation)}
-                        inputProps={{
-                          inputRef: (ref) => {
-                            if (!ref) return
-                          },
-                        }}
-                      >
-                      {selectOptions.map((option, index) => (
-                        <MenuItem key={index} value={option}>{option}</MenuItem>
-                        ))
-                      }
-                      </Select>
+                        rules={validation}
+                        render={({ field: { onChange, value } }) => (
+                          <Select
+                            name={name}
+                            label={label}
+                            value={value}
+                            onChange={(event, option) => {
+                              console.log('opri :', option)
+                              event.preventDefault()
+                              onChange(option.props.value)
+                            }}
+                            
+                          >
+                            {selectOptions.map((option, index) => (
+                              <MenuItem key={index} value={option}>{option}</MenuItem>
+                            ))}
+                          </Select>
+                        )}
+                      />
                     </FormControl>
                   }
                   
