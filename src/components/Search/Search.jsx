@@ -25,7 +25,7 @@ const Search = ({ searchValue, onSearchChange }) => {
         <StyledInputBase
           fullWidth
           value={searchValue}
-          placeholder='Search..'
+          placeholder='Search by tag..'
           inputProps={{
             'aria-label': 'search',
             maxLength: 50
