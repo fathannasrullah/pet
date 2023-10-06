@@ -1,12 +1,24 @@
 ## Introduction 
-
-This is a wedding invitation website. I created this project for practice my HTML semantic concepts
+This is a single page application for explore the pet. this apps have CRUD opreation that integrated with API and contained 3 page namely Home, User and Post
 
 [View Demo](https://fathannasrullah.github.io/pet)
 
 
 ## Installation
-1. I used [http-server](https://www.npmjs.com/package/http-server) (a simple static HTTP server) for running website at local development
+1. Make sure you have installed Node.js (LTS). If Node.js is already installed in your system, make sure the installed version is LTS (and not the latest version)
+2. Navigate to the `skuy-gaskeun` folder and run the following command to install our local dependencies listed in `package.json`. You can use `npm`.
+
+```bash
+# For npm
+npm install
+```
+
+3. Now, you are ready to start the local with the help of the command shown below. Open [http://localhost:5173/](http://localhost:5173/) to check your development 🚀.
+
+```bash
+# For npm
+npm run dev
+```
 
 
 ## Feature
