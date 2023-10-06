@@ -46,7 +46,8 @@ function Home() {
   const { data: list = [], total } = listState
   const pageAmount = Math.floor(total / 20)
 
-  const navigate = useNavigateParams()
+  const navigate = useNavigate()
+  const navigateWithParams = useNavigateParams()
   const location = useLocation()
   const query = new URLSearchParams(location.search)
 
@@ -74,7 +75,8 @@ function Home() {
     // debounce method
     setSearchTimeout(
       setTimeout(() => {
-        setPage(0)
+        setPage(1)
+        navigate('/')
 
         handleFetchDataType('search')
       }, 500)
@@ -86,7 +88,7 @@ function Home() {
     setPage(value)
     handleFetchDataType('page-change')
 
-    navigate('/home', { page: value })
+    navigateWithParams('/home', { page: value })
   }
 
   const handleFetchList = useCallback(() => {
@@ -95,16 +97,26 @@ function Home() {
       limit: 20
     }
 
-    if (fetchType.name === 'search') dispatch(getSearchPostByTag(searchValue))
+    if (fetchType.name === 'search' && !isEmpty(searchValue)) dispatch(getSearchPostByTag(searchValue))
 
-    if ((fetchType.name === 'page-change' && page > 0) || (fetchType.name === 'initial' && page > 0)) {
-      dispatch(getHomeList({
-        ...param,
-        page: page
-      }))
+    if ((fetchType.name === 'page-change' && page > 0) ||
+      (fetchType.name === 'initial' && page > 0) ||
+      (fetchType.name === 'search' && !isEmpty(list))
+      ) {
+        dispatch(isEmpty(searchValue)
+          ? getHomeList({
+              ...param,
+              page: page
+            })
+          : getSearchPostByTag({
+            ...param,
+            inputValue: searchValue,
+            page: page
+          })
+        )
     }
 
-    if ((fetchType.name === 'initial' && page == 1) || isEmpty(searchValue)) dispatch(getHomeList({ ...param }))
+    if ((fetchType.name === 'initial' && page == 1) || (fetchType.name === 'search' && isEmpty(searchValue)) ) dispatch(getHomeList({ ...param }))
   }, [fetchType, page, searchValue])
 
   useEffect(() => {

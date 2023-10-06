@@ -40,11 +40,27 @@ export const creatorListService = async(endpoint, listParams) => {
  * @returns  
  * async function for get list base on search
  */
-export const creatorSearchService = async(endpoint, value, endURL) => {
+export const creatorSearchService = async(endpoint, searchValue, endURL) => {
   if (!APP_ID) return null
 
+  const value = typeof searchValue === 'object' ? searchValue.inputValue : searchValue
   const dinamicEndpoint = `${endpoint}/${value}/${endURL}`
-  
+
+  if (typeof searchValue === 'object') {
+    const { inputValue: _, ...searchParams } = searchValue
+
+    return await axios({
+      method: 'GET',
+      url: dinamicEndpoint,
+      headers: {
+        'app-id': APP_ID
+      },
+      params: {
+        ...searchParams
+      }
+    })
+  }
+
   return await axios({
     method: 'GET',
     url: dinamicEndpoint,
