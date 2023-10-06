@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, PaginationItem, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
 
@@ -16,7 +18,7 @@ import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
 import { limitExcededStr } from '../utils/helpers/string-helper'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
-export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
+const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   '& p': {
     fontSize: '16px',
     color: theme.palette.common.purple.light[1]
@@ -26,6 +28,18 @@ export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     color: theme.palette.common.purple.light[3]
   }
 }))
+
+const PrevIcon = () => {
+  return (
+    <Button startIcon={<ArrowBackIosIcon />}>prev</Button>
+  )
+}
+
+const NextIcon = () => {
+  return (
+    <Button endIcon={<ArrowForwardIosIcon />}>next</Button>
+  )
+}
 
 const useNavigateParams = () => {
   const navigate = useNavigate()
@@ -101,25 +115,30 @@ function Home() {
 
     if ((fetchType.name === 'page-change' && page > 0) ||
       (fetchType.name === 'initial' && page > 0) ||
-      (fetchType.name === 'search' && !isEmpty(list))
-      ) {
-        dispatch(isEmpty(searchValue)
-          ? getHomeList({
-              ...param,
-              page: page
-            })
-          : getSearchPostByTag({
-            ...param,
-            inputValue: searchValue,
-            page: page
+      (fetchType.name === 'search' && !isEmpty(list))) {
+      dispatch(isEmpty(searchValue)
+        ? getHomeList({
+          ...param,
+          page: page
           })
-        )
+        : getSearchPostByTag({
+          ...param,
+          inputValue: searchValue,
+          page: page
+          })
+      )
     }
 
     if ((fetchType.name === 'initial' && page == 1) || (fetchType.name === 'search' && isEmpty(searchValue)) ) dispatch(getHomeList({ ...param }))
   }, [fetchType, page, searchValue])
 
   useEffect(() => {
+    document.documentElement.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    })
+    
     handleFetchList()
   }, [handleFetchList])
 
@@ -151,7 +170,7 @@ function Home() {
 
             return (
               <Grid item xs={6} md={3} key={id}>
-                <Card sx={{ minHeight: 400, maxWidth: 345, overflow: 'auto' }}>
+                <Card sx={{ minHeight: 400, maxWidth: 345 }}>
                   <StyledCardHeader
                     avatar={<Avatar aria-label="recipe" src={picture || <AccountCircleIcon />} />}
                     title={listLoading ? (
@@ -181,11 +200,22 @@ function Home() {
                   {listLoading ? (
                     <Skeleton variant='rectangular' />
                   ) : (
+                    <Box
+                      sx={{
+                        overflow: 'auto',
+                        '::-webkit-scrollbar': {
+                          display: 'none'
+                        },
+                        msOverflowStyle: 'none',
+                        scrollbarWidth: 'none'
+                      }}
+                    >
                     <Stack direction='row' spacing={0.5} padding='0 10px'>
                       {tags.map((tag, index) => (
                         <Chip key={index} label={tag} size='small' />
                       ))}
                     </Stack>
+                    </Box>
                   )}
                   {listLoading ? (
                     <Skeleton sx={{ marginTop: '5px' }} variant='rectangular' />
@@ -203,14 +233,19 @@ function Home() {
           }
         )}
         </Grid>
-        <Grid item xs={12} justifyContent='center' container>
+        <Grid item xs={12} justifyContent='center' sx={{ overflow: 'auto' }} container>
           <Stack>
             <Pagination
               page={page}
               count={pageAmount}
-              onChange={handlePageChange}
               color='primary'
               size='large'
+              onChange={handlePageChange}
+              renderItem={(item) => (
+                <PaginationItem {...item}
+                  slots={{ previous: PrevIcon, next: NextIcon }}
+                />
+              )}
             />
           </Stack>
         </Grid>
