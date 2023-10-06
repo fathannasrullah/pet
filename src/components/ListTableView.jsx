@@ -78,7 +78,6 @@ function ListTableView({
     page: currPage,
     total
   } = listState
-
   const rowsPerPage = 10
 
   const handleFetchDataType = (type) => {
@@ -102,26 +101,6 @@ function ListTableView({
     if ((rowAmount === listAmount) && (rowAmount !== totalData)) handleNextPage()
     
     setPage(newPage)
-  }
-
-  const FILTERS = {
-    NONE: (listWithPagination) => listWithPagination,
-    /*ALLSELECTED: (listWithoutPagination) => listWithoutPagination.filter(({ brand, category, price }) => 
-      categoriesAndBrandsSelected.includes(category) &&
-      categoriesAndBrandsSelected.includes(brand) &&
-      price >= minPriceSelected && price <= maxPriceSelected
-    ),
-    SOMESELECTED: (listWithoutPagination) => listWithoutPagination.filter(({ brand, category, price }) => 
-      categoriesAndBrandsSelected.includes(brand)
-        ? categoriesAndBrandsSelected.includes(category) ||
-          categoriesAndBrandsSelected.includes(brand) &&
-          price >= minPriceSelected && price <= maxPriceSelected
-        : !isEmpty(categoriesAndBrandsSelected)
-          ? categoriesAndBrandsSelected.includes(brand) ||
-            categoriesAndBrandsSelected.includes(category) &&
-            price >= minPriceSelected && price <= maxPriceSelected
-          : price >= minPriceSelected && price <= maxPriceSelected
-    )*/
   }
 
   const handleFetchList = useCallback(() => {
@@ -153,8 +132,12 @@ function ListTableView({
 
   useEffect(() => {
     handleFetchList()
-  }, [handleFetchList])
+  }, [handleFetchList, deleteDataSuccess])
 
+  const FILTERS = {
+    NONE: (listWithPagination) => listWithPagination,
+  }
+  
   const filterFunction = FILTERS[filter.filterKey]
   const filteredList = filterFunction(list)
 
@@ -208,9 +191,7 @@ function ListTableView({
         />
       }
       
-      {
-      //((actionType === 'edit' && !isEmpty(details) && openCreateUpdateModal) || (actionType === 'create' && openCreateUpdateModal)) 
-      openCreateUpdateModal &&
+      {openCreateUpdateModal &&
         <CreateUpdateModal
           title={title}
           actionType={actionType}

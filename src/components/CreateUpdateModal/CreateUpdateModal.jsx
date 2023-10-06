@@ -98,10 +98,7 @@ function CreateUpdateModal({
     }))
   }
 
-  const handleSubmitForm = (data) => {
-    console.log('data that send :', data)
-    onSubmit(data)
-  }
+  const handleSubmitForm = (data) => onSubmit(data)
 
   useEffect(() => {
     reset(initialInput)
@@ -196,7 +193,6 @@ function CreateUpdateModal({
                             label={label}
                             value={value}
                             onChange={(event, option) => {
-                              console.log('opri :', option)
                               event.preventDefault()
                               onChange(option.props.value)
                             }}

@@ -185,8 +185,8 @@ export const creatorUpdateAction = async(
     } else {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
-        responseMessage,
         errorMessage,
+        responseMessage,
         false,
         paramsTextPrimary,
         paramsTextSecondary,
@@ -215,7 +215,7 @@ export const creatorDeleteAction = async(
   successMessage,
   errorMessage,
   paramsTextPrimary={},
-  paramsTextSecondary={},
+  paramsTextSecondary={}
 ) => {
   try {
     const response = await serviceFunc(paramsDeleteAction)
@@ -266,8 +266,8 @@ export const creatorDeleteAction = async(
     } else {
       messageHelper.failedMessage(
         thunkAPI.dispatch,
-        responseMessage,
         errorMessage,
+        responseMessage,
         false,
         paramsTextPrimary,
         paramsTextSecondary,

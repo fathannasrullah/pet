@@ -92,14 +92,18 @@ const userSlice = createSlice({
       state.requestStatus = REQUEST_STATUS.USER_UPDATE_FAILED
     }),
     // delete user
-    builder.addCase(deleteUser.fulfilled, (state) => {
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      state[STATE_NAME.USER_LIST] = {
+        ...state[STATE_NAME.USER_LIST],
+        data: state[STATE_NAME.USER_LIST].data.filter((user) => user.id !== action.payload.id)
+      }
       state.requestStatus = REQUEST_STATUS.USER_DELETE_SUCCESS
     }),
     builder.addCase(deleteUser.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.USER_DELETE_PENDING
     }),
     builder.addCase(deleteUser.rejected, (state) => {
-      state[STATE_NAME.USER_LIST] = {}
+      state[STATE_NAME.USER_LIST] = state[STATE_NAME.USER_LIST]
       state.requestStatus = REQUEST_STATUS.USER_DELETE_FAILED
     })
   }

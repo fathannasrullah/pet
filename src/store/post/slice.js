@@ -92,7 +92,7 @@ const postSlice = createSlice({
     builder.addCase(addPost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_CREATE_PENDING
     }),
-    builder.addCase(addPost.rejected, ( state ) => {
+    builder.addCase(addPost.rejected, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_CREATE_FAILED
     }),
     // update post
@@ -102,18 +102,22 @@ const postSlice = createSlice({
     builder.addCase(updatePost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_UPDATE_PENDING
     }),
-    builder.addCase(updatePost.rejected, ( state ) => {
+    builder.addCase(updatePost.rejected, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_UPDATE_FAILED
     }),
     // delete post
-    builder.addCase(deletePost.fulfilled, ( state ) => {
+    builder.addCase(deletePost.fulfilled, (state) => {
+      state[STATE_NAME.POST_LIST] = {
+        ...state[STATE_NAME.POST_LIST],
+        data: state[STATE_NAME.POST_LIST].data.filter((post) => post.id !== action.payload.id)
+      }
       state.requestStatus = REQUEST_STATUS.POST_DELETE_SUCCESS
     }),
-    builder.addCase(deletePost.pending, ( state ) => {
+    builder.addCase(deletePost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_DELETE_PENDING
     }),
-    builder.addCase(deletePost.rejected, ( state ) => {
-      state[STATE_NAME.POST_LIST] = {}
+    builder.addCase(deletePost.rejected, (state) => {
+      state[STATE_NAME.POST_LIST] = state[STATE_NAME.POST_LIST]
       state.requestStatus = REQUEST_STATUS.POST_DELETE_FAILED
     })
   }
