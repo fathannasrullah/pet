@@ -99,7 +99,7 @@ function ListTableView({
     const listAmount = list.length
     const rowAmount = rowsPerPage * (newPage+1)
 
-    if (rowAmount === listAmount && rowAmount !== totalData) handleNextPage()
+    if ((rowAmount === listAmount) && (rowAmount !== totalData)) handleNextPage()
     
     setPage(newPage)
   }
@@ -146,9 +146,8 @@ function ListTableView({
     if (fetchType.name === 'initial' || fetchType.name === 'next-page') dispatch(onFetchList({ ...param }))
 
     if (deleteDataSuccess) {
-      setPage(0)
       handleCloseDeleteModal()
-      dispatch(onFetchRefreshList({ ...param, page: 1 }))
+      dispatch(onFetchRefreshList({ ...param, page: currPage }))
     }
   }, [fetchType, deleteDataSuccess])
 

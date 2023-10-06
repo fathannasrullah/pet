@@ -18,7 +18,10 @@ import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCrea
 
 function Post() {
   const dispatch = useDispatch()
-  const { requestStatus } = useSelector(state => state[STORE_NAME.POST])
+  const {
+    requestStatus,
+    [STATE_NAME.POST_LIST]: listState
+  } = useSelector(state => state[STORE_NAME.POST])
 
   const [selectedData, setSelectedData] = useState(null)
   const [openImagePreview, setOpenImagePreview] = useState(false)
@@ -31,7 +34,8 @@ function Post() {
   const createPostSuccess = requestStatus === REQUEST_STATUS.POST_CREATE_SUCCESS
   const updatePostLoading = requestStatus === REQUEST_STATUS.POST_UPDATE_PENDING
   const updatePostSuccess = requestStatus === REQUEST_STATUS.POST_UPDATE_SUCCESS
-  
+  const { page: currPage } = listState
+
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
   const handleOpenDeletePost = () => setOpenDeletePost(true)
@@ -47,7 +51,7 @@ function Post() {
   const handleOpenCreateUpdatePost = () => setOpenCreateUpdatePost(true)
   const handleCloseCreateUpdatePost = () => {
     if (actionType === 'edit') handleSetTitleAndActionType('add new post', 'create')
-    if (createPostSuccess || updatePostSuccess) dispatch(getPostList())
+    if (createPostSuccess || updatePostSuccess) dispatch(getRefreshPostList({ limit: 30, page: currPage }))
     setOpenCreateUpdatePost(false)
   }
 

@@ -69,7 +69,13 @@ const postSlice = createSlice({
     }),
     // refresh post list
     builder.addCase(getRefreshPostList.fulfilled, (state, action) => {
-      state[STATE_NAME.POST_LIST] = action.payload[STATE_NAME.POST_LIST] || {}
+      const newData = [...state[STATE_NAME.POST_LIST].data, ...action.payload[STATE_NAME.POST_LIST].data]
+      const newUniqueData = [...new Map(newData.map((post) => [post.id, post])).values()]
+      
+      state[STATE_NAME.POST_LIST] = {
+        ...action.payload[STATE_NAME.POST_LIST],
+        data: newUniqueData
+      } || {}
       state.requestStatus = REQUEST_STATUS.POST_LIST_SUCCESS
     }),
     builder.addCase(getRefreshPostList.pending, (state) => {

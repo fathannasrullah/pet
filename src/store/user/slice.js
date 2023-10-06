@@ -43,7 +43,13 @@ const userSlice = createSlice({
     }),
     // refresh user list
     builder.addCase(getRefreshUserList.fulfilled, (state, action) => {
-      state[STATE_NAME.USER_LIST] = action.payload[STATE_NAME.USER_LIST] || {}
+      const newData = [...state[STATE_NAME.USER_LIST].data, ...action.payload[STATE_NAME.USER_LIST].data]
+      const newUniqueData = [...new Map(newData.map((user) => [user.id, user])).values()]
+      
+      state[STATE_NAME.USER_LIST] = {
+        ...action.payload[STATE_NAME.USER_LIST],
+        data: newUniqueData
+      } || {}
       state.requestStatus = REQUEST_STATUS.USER_LIST_SUCCESS
     }),
     builder.addCase(getRefreshUserList.pending, (state) => {

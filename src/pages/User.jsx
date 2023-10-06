@@ -25,7 +25,8 @@ function User() {
   const dispatch = useDispatch()
   const {
     requestStatus,
-    [STATE_NAME.USER_DETAIL]: detailState
+    [STATE_NAME.USER_DETAIL]: detailState,
+    [STATE_NAME.USER_LIST]: listState
   } = useSelector(state => state[STORE_NAME.USER])
 
   const [selectedData, setSelectedData] = useState(null)
@@ -42,7 +43,8 @@ function User() {
   const updateUserSuccess = requestStatus === REQUEST_STATUS.USER_UPDATE_SUCCESS
   const details = detailState
   const userID = !isEmpty(selectedData) && selectedData.id
-  
+  const { page: currPage } = listState
+
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
   const handleOpenDeletePost = () => setOpenDeletePost(true)
@@ -62,7 +64,7 @@ function User() {
   const handleCloseCreateUpdatePost = () => {
     if (actionType === 'edit') handleSetTitleAndActionType('add new user', 'create')
     setOpenCreateUpdatePost(false)
-    if (createUserSuccess || updateUserSuccess) dispatch(getUserList())
+    if (createUserSuccess || updateUserSuccess) dispatch(getRefreshUserList({ limit: 30, page: currPage }))
   }
   
   const handleSubmit = (data) => {
