@@ -153,7 +153,7 @@ function Home() {
           />
         </Grid>
         <Grid minHeight='80vh' item xs={12} spacing={2} container>
-          {isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>NO DATA</Typography></Grid>}
+          {!listLoading && isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>NO DATA</Typography></Grid>}
           {list.map(({
             id,
             owner,
@@ -238,7 +238,7 @@ function Home() {
           <Stack overflow='auto' margin='10px 0'>
             <StyledPagination
               page={page}
-              count={pageAmount}
+              count={pageAmount || 0}
               color='primary'
               size='large'
               onChange={handlePageChange}
