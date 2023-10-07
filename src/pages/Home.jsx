@@ -29,6 +29,14 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   }
 }))
 
+
+const StyledPagination = styled(Pagination)(() => ({
+  '& ul': {
+    display: 'flex',
+    flexWrap: 'nowrap',
+  }
+}))
+
 const PrevIcon = () => {
   return (
     <Button startIcon={<ArrowBackIosIcon />}>prev</Button>
@@ -233,9 +241,9 @@ function Home() {
           }
         )}
         </Grid>
-        <Grid item xs={12} justifyContent='center' sx={{ overflow: 'auto' }} container>
-          <Stack>
-            <Pagination
+        <Grid item xs={12} justifyContent='center' container>
+          <Stack overflow='auto' margin='10px 0'>
+            <StyledPagination
               page={page}
               count={pageAmount}
               color='primary'
