@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { isEmpty } from 'lodash'
-
 import {
   getUserList,
   getRefreshUserList,

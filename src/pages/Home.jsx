@@ -1,22 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
-
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { isEmpty } from 'lodash'
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, PaginationItem, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-
-import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
-
-import { getHomeList, getSearchPostByTag } from '../store/post/action'
-
-import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
-import Search from '../components/Search/Search'
-import { isEmpty } from 'lodash'
-import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
-import { limitExcededStr } from '../utils/helpers/string-helper'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { getHomeList, getSearchPostByTag } from '../store/post/action'
+import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
+import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
+import { limitExcededStr } from '../utils/helpers/string-helper'
+import Search from '../components/Search/Search'
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   '& p': {
@@ -28,7 +23,6 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     color: theme.palette.common.purple.light[3]
   }
 }))
-
 
 const StyledPagination = styled(Pagination)(() => ({
   '& ul': {
@@ -93,7 +87,6 @@ function Home() {
         ? emptyValue
         : event.target.value
     )
-
     // debounce method
     setSearchTimeout(
       setTimeout(() => {
