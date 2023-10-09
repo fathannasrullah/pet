@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { isEmpty } from 'lodash'
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, IconButton, Pagination, PaginationItem, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Grid, Pagination, PaginationItem, Skeleton, Stack, ThemeProvider, Typography, styled } from '@mui/material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { getHomeList, getSearchPostByTag } from '../store/post/action'
-import { currencyFormat, getReadableDate } from '../utils/helpers/format-helper'
+import { getReadableDate } from '../utils/helpers/format-helper'
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
 import { limitExcededStr } from '../utils/helpers/string-helper'
 import Search from '../components/Search/Search'
+import Likes from '../components/Likes'
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   '& p': {
@@ -167,7 +167,6 @@ function Home() {
             const fullName = limitExcededStr(`${firstName} ${lastName}`, 8)
             const date = getReadableDate(publishDate, 'en')
             const contentText = limitExcededStr(text, 33)
-            const likeAmount = currencyFormat(likes, 0)
 
             return (
               <Grid item xs={6} md={3} key={id}>
@@ -222,10 +221,10 @@ function Home() {
                     <Skeleton sx={{ marginTop: '5px' }} variant='rectangular' />
                   ) : (
                     <CardActions disableSpacing>
-                      <IconButton aria-label='likes'>
-                        <FavoriteIcon/>
-                      </IconButton>
-                      <span>{likeAmount}</span>
+                      <Likes
+                        id={id}
+                        likes={likes}
+                      />
                     </CardActions>
                   )}
                 </Card>
