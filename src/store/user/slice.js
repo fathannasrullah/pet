@@ -38,18 +38,12 @@ const userSlice = createSlice({
       state.requestStatus = REQUEST_STATUS.USER_LIST_PENDING
     }),
     builder.addCase(getUserList.rejected, (state) => {
-      state[STATE_NAME.POST_LIST] = {}
+      state[STATE_NAME.USER_LIST] = {}
       state.requestStatus = REQUEST_STATUS.USER_LIST_FAILED
     }),
     // refresh user list
     builder.addCase(getRefreshUserList.fulfilled, (state, action) => {
-      const newData = [...state[STATE_NAME.USER_LIST].data, ...action.payload[STATE_NAME.USER_LIST].data]
-      const newUniqueData = [...new Map(newData.map((user) => [user.id, user])).values()]
-      
-      state[STATE_NAME.USER_LIST] = {
-        ...action.payload[STATE_NAME.USER_LIST],
-        data: newUniqueData
-      } || {}
+      state[STATE_NAME.USER_LIST] = action.payload[STATE_NAME.USER_LIST]
       state.requestStatus = REQUEST_STATUS.USER_LIST_SUCCESS
     }),
     builder.addCase(getRefreshUserList.pending, (state) => {
@@ -92,18 +86,13 @@ const userSlice = createSlice({
       state.requestStatus = REQUEST_STATUS.USER_UPDATE_FAILED
     }),
     // delete user
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
-      state[STATE_NAME.USER_LIST] = {
-        ...state[STATE_NAME.USER_LIST],
-        data: state[STATE_NAME.USER_LIST].data.filter((user) => user.id !== action.payload.id)
-      }
+    builder.addCase(deleteUser.fulfilled, (state) => {
       state.requestStatus = REQUEST_STATUS.USER_DELETE_SUCCESS
     }),
     builder.addCase(deleteUser.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.USER_DELETE_PENDING
     }),
     builder.addCase(deleteUser.rejected, (state) => {
-      state[STATE_NAME.USER_LIST] = state[STATE_NAME.USER_LIST]
       state.requestStatus = REQUEST_STATUS.USER_DELETE_FAILED
     })
   }

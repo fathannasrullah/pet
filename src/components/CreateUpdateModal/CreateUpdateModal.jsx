@@ -32,6 +32,8 @@ function CreateUpdateModal({
   storeNameForAutocomplete,
   stateNameForAutocomplete,
   getAutocompleteList,
+  setPage,
+  handleFetchDataType,
   handleCloseCreateUpdateModal,
   onSubmit,
 }) {
@@ -57,9 +59,9 @@ function CreateUpdateModal({
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
     control,
-    reset
   } = useForm({ defaultValues: initialInput })
 
   const {
@@ -67,20 +69,6 @@ function CreateUpdateModal({
     page: currPage,
     total
   } = listState
-  
-  /*const handleInputChange = (event) => {
-    const { name, value } = event.target
-    
-    setInput(prevInput => ({
-      ...prevInput,
-      [name]: value
-    }))
-  }*/
-  
-  const handleAutocompleteChange = (event, name, value) => {
-    event.preventDefault()
-    setInput(prevInput => ({ ...prevInput, [name]: value.id}))
-  }
 
   const handleOpenAutocomplete = () => {
     dispatch(getAutocompleteList({
@@ -101,12 +89,13 @@ function CreateUpdateModal({
   const handleSubmitForm = (data) => onSubmit(data)
 
   useEffect(() => {
-    reset(initialInput)
-
-    if (createDataSuccess || updateDataSuccess && !isEmpty(initialInput)) {
-      reset(initialInput)
+    if (createDataSuccess || updateDataSuccess) {
+      setPage(0)
+      handleFetchDataType('refresh-page')
       handleCloseCreateUpdateModal()
     }
+    
+    reset(initialInput)
   }, [reset, initialInput, createDataSuccess, updateDataSuccess])
 
   if (actionType === 'edit' && isEmpty(details)) {
@@ -129,8 +118,8 @@ function CreateUpdateModal({
           </Grid>
         </DialogContent>
       </StyledDialog>
-      )
-    }
+    )
+  }
 
   return (
     <StyledDialog
@@ -196,7 +185,6 @@ function CreateUpdateModal({
                               event.preventDefault()
                               onChange(option.props.value)
                             }}
-                            
                           >
                             {selectOptions.map((option, index) => (
                               <MenuItem key={index} value={option}>{option}</MenuItem>
@@ -207,7 +195,6 @@ function CreateUpdateModal({
                     </FormControl>
                   }
                   
-
                   {isAutocomplete &&
                     <Controller
                       control={control}

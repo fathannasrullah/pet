@@ -69,13 +69,7 @@ const postSlice = createSlice({
     }),
     // refresh post list
     builder.addCase(getRefreshPostList.fulfilled, (state, action) => {
-      const newData = [...state[STATE_NAME.POST_LIST].data, ...action.payload[STATE_NAME.POST_LIST].data]
-      const newUniqueData = [...new Map(newData.map((post) => [post.id, post])).values()]
-      
-      state[STATE_NAME.POST_LIST] = {
-        ...action.payload[STATE_NAME.POST_LIST],
-        data: newUniqueData
-      } || {}
+      state[STATE_NAME.POST_LIST] = action.payload[STATE_NAME.POST_LIST]
       state.requestStatus = REQUEST_STATUS.POST_LIST_SUCCESS
     }),
     builder.addCase(getRefreshPostList.pending, (state) => {
@@ -107,17 +101,12 @@ const postSlice = createSlice({
     }),
     // delete post
     builder.addCase(deletePost.fulfilled, (state) => {
-      state[STATE_NAME.POST_LIST] = {
-        ...state[STATE_NAME.POST_LIST],
-        data: state[STATE_NAME.POST_LIST].data.filter((post) => post.id !== action.payload.id)
-      }
       state.requestStatus = REQUEST_STATUS.POST_DELETE_SUCCESS
     }),
     builder.addCase(deletePost.pending, (state) => {
       state.requestStatus = REQUEST_STATUS.POST_DELETE_PENDING
     }),
     builder.addCase(deletePost.rejected, (state) => {
-      state[STATE_NAME.POST_LIST] = state[STATE_NAME.POST_LIST]
       state.requestStatus = REQUEST_STATUS.POST_DELETE_FAILED
     })
   }

@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isEmpty } from 'lodash'
 import {
@@ -16,21 +16,19 @@ import {
   STATE_NAME,
   REQUEST_STATUS
 } from '../utils/constant'
-
 import ListTableView from '../components/ListTableView'
 
 function User() {
   const dispatch = useDispatch()
   const {
     requestStatus,
-    [STATE_NAME.USER_DETAIL]: detailState,
-    [STATE_NAME.USER_LIST]: listState
+    [STATE_NAME.USER_DETAIL]: detailState
   } = useSelector(state => state[STORE_NAME.USER])
 
   const [selectedData, setSelectedData] = useState(null)
-  const [openDeletePost, setOpenDeletePost] = useState(false)
+  const [openDeleteUser, setOpenDeleteUser] = useState(false)
   const [openImagePreview, setOpenImagePreview] = useState(false)
-  const [openCreateUpdatePost, setOpenCreateUpdatePost] = useState(false)
+  const [openCreateUpdateUser, setOpenCreateUpdateUser] = useState(false)
   const [title, setTitle] = useState('add new user')
   const [actionType, setActionType] = useState('create')
 
@@ -39,39 +37,36 @@ function User() {
   const createUserSuccess = requestStatus === REQUEST_STATUS.USER_CREATE_SUCCESS
   const updateUserLoading = requestStatus === REQUEST_STATUS.USER_UPDATE_PENDING
   const updateUserSuccess = requestStatus === REQUEST_STATUS.USER_UPDATE_SUCCESS
+  const deleteUserLoading = requestStatus === REQUEST_STATUS.USER_DELETE_PENDING
+  const deleteUserSuccess = requestStatus === REQUEST_STATUS.USER_DELETE_SUCCESS
   const details = detailState
   const userID = !isEmpty(selectedData) && selectedData.id
-  const { page: currPage } = listState
 
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
-  const handleOpenDeletePost = () => setOpenDeletePost(true)
-  const handleCloseDeletePost = () => setOpenDeletePost(false)
+  const handleOpenDeleteUser = () => setOpenDeleteUser(true)
+  const handleCloseDeleteUser = () => setOpenDeleteUser(false)
   const handleGetDataSelected = (data) => setSelectedData(JSON.parse(data))
-  const handleDeletePost = () => dispatch(deleteUser(selectedData.id))
-  
+  const handleDeleteUser = () => dispatch(deleteUser(selectedData.id))
   const handleSetTitleAndActionType = (title, actionType) => {
     setTitle(title)
     setActionType(actionType)
   }
-  
-  const handleOpenCreateUpdatePost = () => {
-    setOpenCreateUpdatePost(true)
+  const handleOpenCreateUpdateUser = () => {
+    setOpenCreateUpdateUser(true)
   }
-
-  const handleCloseCreateUpdatePost = () => {
+  const handleCloseCreateUpdateUser = () => {
     if (actionType === 'edit') handleSetTitleAndActionType('add new user', 'create')
-    setOpenCreateUpdatePost(false)
-    if (createUserSuccess || updateUserSuccess) dispatch(getRefreshUserList({ limit: 30, page: currPage }))
+
+    setOpenCreateUpdateUser(false)
   }
-  
   const handleSubmit = (data) => {
     console.log('data submitted: ', data)
     dispatch(
       actionType === 'create' ? addUser(data) : updateUser(data)
     )
   }
-  
+
   useEffect(() => {
     !isEmpty(userID) && dispatch(getUserDetail(userID))
   }, [userID, dispatch])
@@ -85,8 +80,6 @@ function User() {
         storeName={STORE_NAME.USER}
         listStateName={STATE_NAME.USER_LIST}
         listLoadingStatus={REQUEST_STATUS.USER_LIST_PENDING}
-        deleteLoadingStatus={REQUEST_STATUS.USER_DELETE_PENDING}
-        deleteSuccessStatus={REQUEST_STATUS.USER_DELETE_SUCCESS}
         onFetchList={getUserList}
         onFetchRefreshList={getRefreshUserList}
 
@@ -96,13 +89,13 @@ function User() {
         
         source='User'
         selectedData={!isEmpty(selectedData) && selectedData}
-        openDeleteModal={openDeletePost}
+        openDeleteModal={openDeleteUser}
         handleGetDataSelected={handleGetDataSelected}
-        handleOpenDeleteModal={handleOpenDeletePost}
-        handleCloseDeleteModal={handleCloseDeletePost}
-        handleDeleteData={handleDeletePost}
+        handleOpenDeleteModal={handleOpenDeleteUser}
+        handleCloseDeleteModal={handleCloseDeleteUser}
+        handleDeleteData={handleDeleteUser}
 
-        openCreateUpdateModal={openCreateUpdatePost}
+        openCreateUpdateModal={openCreateUpdateUser}
         title={title}
         actionType={actionType}
         details={details}
@@ -111,10 +104,12 @@ function User() {
         createDataSuccess={createUserSuccess}
         updateDataLoading={updateUserLoading}
         updateDataSuccess={updateUserSuccess}
+        deleteDataLoading={deleteUserLoading}
+        deleteDataSuccess={deleteUserSuccess}
         inputs={generateInputCreateUpdateUser(actionType, details)}
-        handleOpenCreateUpdateModal={handleOpenCreateUpdatePost}
+        handleOpenCreateUpdateModal={handleOpenCreateUpdateUser}
         handleSetTitleAndActionType={handleSetTitleAndActionType}
-        handleCloseCreateUpdateModal={handleCloseCreateUpdatePost}
+        handleCloseCreateUpdateModal={handleCloseCreateUpdateUser}
         handleSubmit={handleSubmit}
       />
     </main>

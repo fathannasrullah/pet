@@ -1,5 +1,6 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material'
+import { SecurityUpdateGood } from '@mui/icons-material'
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />
@@ -10,9 +11,20 @@ function DeleteDataModal({
   open,
   selectedData,
   deleteDataLoading,
+  deleteDataSuccess,
+  setPage,
   handleClose,
   handleDeleteData,
+  handleFetchDataType
 }) {
+  useEffect(() => {
+    if (deleteDataSuccess) {
+      setPage(0)
+      handleFetchDataType('refresh-page')
+      handleClose()
+    }
+  }, [deleteDataSuccess])
+
   return (
     <Dialog
       open={open}

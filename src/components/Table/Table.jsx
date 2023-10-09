@@ -16,6 +16,7 @@ import { isEmpty } from 'lodash'
 import TableRowPrimary from './TableRowPrimary'
 
 import { StyledTableContainer } from './styles'
+import InitialLoading from '../IntialLoading'
 
 function Table({
   TableRowCustom = TableRowPrimary,
@@ -23,6 +24,7 @@ function Table({
   rows,
   page,
   rowsPerPage,
+  totalList,
   viewDetail,
   basePath,
   listIsLoading,
@@ -74,6 +76,7 @@ function Table({
               })}
             </TableBody>
           </MUITable>
+          {listIsLoading && <InitialLoading />}
           {isEmpty(rows) && !listIsLoading &&
             <Grid container justifyContent='center' alignItems='center' sx={{ height: '50vh' }}>
               <Typography>Data not found!</Typography>
@@ -83,10 +86,16 @@ function Table({
         <TablePagination 
           rowsPerPageOptions={[10]}
           component='div'
-          count={rows.length}
+          count={totalList || 0}
           rowsPerPage={rowsPerPage}
-          page={page}
+          page={page || 0}
           onPageChange={onPageChange}
+          SelectProps={{
+            disabled: listIsLoading
+          }}
+          nextIconButtonProps={
+            listIsLoading ? { disabled: listIsLoading } : undefined
+          }
         />
       </Paper>
     </Card>

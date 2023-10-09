@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
-
 import { Button, Grid } from '@mui/material'
-
-import { isEmpty } from 'lodash'
-
 import Table from '../components/Table/Table'
 import DeleteDataModal from './DeleteDataModal'
 import CreateUpdateModal from './CreateUpdateModal/CreateUpdateModal'
@@ -13,19 +8,15 @@ import ImagePreviewModal from './ImagePreviewModal'
 
 function ListTableView({
   TableRowCustom,
-  //showSearchFilter = false,
   addButtonLabel = 'Create Post',
   tableColumns,
   responseKeyName,
   storeName,
   listStateName,
   listLoadingStatus,
-  deleteLoadingStatus,
-  deleteSuccessStatus,
   basePath,
   onFetchList,
   onFetchRefreshList,
-  onFetchSearch,
 
   openImagePreviewModal,
   handleOpenImagePreviewModal,
@@ -50,6 +41,8 @@ function ListTableView({
   createDataSuccess,
   updateDataLoading,
   updateDataSuccess,
+  deleteDataLoading,
+  deleteDataSuccess,
   storeNameForAutocomplate,
   stateNameForAutocomplete,
   getAutocompleteList,
@@ -60,7 +53,6 @@ function ListTableView({
 }) {
   const [page, setPage] = useState(0)
   const [fetchType, setFetchType] = useState({ name: 'initial' })
-  const [searchValue, setSearchValue] = useState('')
   const [filter, setFilter] = useState({ filterKey: 'NONE' })
 
   const dispatch = useDispatch()
@@ -70,8 +62,6 @@ function ListTableView({
   } = useSelector((state) => state[storeName])
 
   const listIsLoading = requestStatus === listLoadingStatus
-  const deleteDataLoading = requestStatus === deleteLoadingStatus
-  const deleteDataSuccess = requestStatus === deleteSuccessStatus
 
   const {
     [responseKeyName]: list = [],
@@ -87,52 +77,38 @@ function ListTableView({
     })
   }
 
-  const handleNextPage = () => {
-    handleFetchDataType('next-page')
-  }
-
   const handlePageChange = (event, newPage) => {
     event.preventDefault()
-    
+
     const totalData = total
     const listAmount = list.length
-    const rowAmount = rowsPerPage * (newPage+1)
-
-    if ((rowAmount === listAmount) && (rowAmount !== totalData)) handleNextPage()
+    let rowAmount = 10
+    
+    if (newPage >= 1) rowAmount = newPage == 1 ? rowsPerPage * 1 : rowsPerPage * newPage
+    if ((rowAmount === listAmount) && (rowAmount !== totalData)) handleFetchDataType('next-page')
     
     setPage(newPage)
   }
 
   const handleFetchList = useCallback(() => {
     let param = {
-      limit: 30,
+      limit: 10,
       page: 1
     }
 
     if (fetchType.name === 'next-page') {
-      param = {
+      dispatch(onFetchList({
         ...param,
         page: currPage + 1
-      }
+      }))
     }
-
-    if (fetchType.name === 'all-data') dispatch(onFetchList({ limit: 0 }))
-    if (fetchType.name === 'search') dispatch(onFetchSearch({ 
-      q: searchValue,
-      limit: 0
-    }))
-    
-    if (fetchType.name === 'initial' || fetchType.name === 'next-page') dispatch(onFetchList({ ...param }))
-
-    if (deleteDataSuccess) {
-      handleCloseDeleteModal()
-      dispatch(onFetchRefreshList({ ...param, page: currPage }))
-    }
-  }, [fetchType, deleteDataSuccess])
+    if (fetchType.name === 'refresh-page') dispatch(onFetchRefreshList({ ...param }))
+    if (fetchType.name === 'initial') dispatch(onFetchList({ ...param }))
+  }, [fetchType])
 
   useEffect(() => {
     handleFetchList()
-  }, [handleFetchList, deleteDataSuccess])
+  }, [handleFetchList])
 
   const FILTERS = {
     NONE: (listWithPagination) => listWithPagination,
@@ -159,6 +135,7 @@ function ListTableView({
             rows={filteredList}
             page={page}
             rowsPerPage={rowsPerPage}
+            totalList={total}
             basePath={basePath}
             listIsLoading={listIsLoading}
             onPageChange={handlePageChange}
@@ -186,8 +163,11 @@ function ListTableView({
           open={openDeleteModal}
           selectedData={selectedData.firstName || selectedData.owner.firstName}
           deleteDataLoading={deleteDataLoading}
+          deleteDataSuccess={deleteDataSuccess}
           handleClose={handleCloseDeleteModal}
+          setPage={setPage}
           handleDeleteData={handleDeleteData}
+          handleFetchDataType={handleFetchDataType}
         />
       }
       
@@ -207,6 +187,8 @@ function ListTableView({
           storeNameForAutocomplete={storeNameForAutocomplate}
           stateNameForAutocomplete={stateNameForAutocomplete}
           getAutocompleteList={getAutocompleteList}
+          setPage={setPage}
+          handleFetchDataType={handleFetchDataType}
           handleOpenCreateUpdateModal={handleOpenCreateUpdateModal}
           handleCloseCreateUpdateModal={handleCloseCreateUpdateModal}
           onSubmit={handleSubmit}

@@ -18,10 +18,7 @@ import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCrea
 
 function Post() {
   const dispatch = useDispatch()
-  const {
-    requestStatus,
-    [STATE_NAME.POST_LIST]: listState
-  } = useSelector(state => state[STORE_NAME.POST])
+  const { requestStatus } = useSelector(state => state[STORE_NAME.POST])
 
   const [selectedData, setSelectedData] = useState(null)
   const [openImagePreview, setOpenImagePreview] = useState(false)
@@ -34,7 +31,8 @@ function Post() {
   const createPostSuccess = requestStatus === REQUEST_STATUS.POST_CREATE_SUCCESS
   const updatePostLoading = requestStatus === REQUEST_STATUS.POST_UPDATE_PENDING
   const updatePostSuccess = requestStatus === REQUEST_STATUS.POST_UPDATE_SUCCESS
-  const { page: currPage } = listState
+  const deletePostLoading = requestStatus === REQUEST_STATUS.POST_DELETE_PENDING
+  const deletePostSuccess = requestStatus === REQUEST_STATUS.POST_DELETE_SUCCESS
 
   const handleOpenImagePreviewModal = () => setOpenImagePreview(true)
   const handleCloseImagePreviewModal = () => setOpenImagePreview(false)
@@ -51,7 +49,7 @@ function Post() {
   const handleOpenCreateUpdatePost = () => setOpenCreateUpdatePost(true)
   const handleCloseCreateUpdatePost = () => {
     if (actionType === 'edit') handleSetTitleAndActionType('add new post', 'create')
-    if (createPostSuccess || updatePostSuccess) dispatch(getRefreshPostList({ limit: 30, page: currPage }))
+
     setOpenCreateUpdatePost(false)
   }
 
@@ -75,8 +73,6 @@ function Post() {
         storeName={STORE_NAME.POST}
         listStateName={STATE_NAME.POST_LIST}
         listLoadingStatus={REQUEST_STATUS.POST_LIST_PENDING}
-        deleteLoadingStatus={REQUEST_STATUS.POST_DELETE_PENDING}
-        deleteSuccessStatus={REQUEST_STATUS.POST_DELETE_SUCCESS}
         onFetchList={getPostList}
         onFetchRefreshList={getRefreshPostList}
 
@@ -99,8 +95,9 @@ function Post() {
         createDataSuccess={createPostSuccess}
         updateDataLoading={updatePostLoading}
         updateDataSuccess={updatePostSuccess}
+        deleteDataLoading={deletePostLoading}
+        deleteDataSuccess={deletePostSuccess}
         inputs={generateInputCreateUpdatePost(actionType, selectedData)}
-        btnText='post'
         storeNameForAutocomplate={STORE_NAME.USER}
         stateNameForAutocomplete={STATE_NAME.USER_LIST}
         getAutocompleteList={getUserList}
