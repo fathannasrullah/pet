@@ -1,8 +1,6 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
-
-import { DialogContent, TextField, Typography, Button, Autocomplete, Grid, DialogActions, Select, IconButton, MenuItem, ListItemText, ListItemIcon, InputLabel, FormControl, CircularProgress, Box, Popper } from '@mui/material'
-
-import { StyledDialog, StyledDialogTitle, StyledFormControl } from './styles'
+import { Fragment, useEffect, useMemo } from "react";
+import { DialogContent, TextField, Typography, Button, Autocomplete, Grid, Select, IconButton, MenuItem, InputLabel, FormControl, CircularProgress, Popper  } from '@mui/material'
+import { StyledCircularProgress, StyledDialog, StyledDialogTitle, StyledFormControl } from './styles'
 import { useDispatch, useSelector } from "react-redux"
 import CustomAutocomplete from "../CustomAutocomplete/CustomAutocomplete"
 import autocompleteHelper from "../../utils/helpers/autocomplete-helper"
@@ -24,7 +22,7 @@ function CreateUpdateModal({
   inputs,
   open,
   details,
-  detailLoading,
+  autocompleteListLoading,
   createDataLoading,
   createDataSuccess,
   updateDataLoading,
@@ -48,10 +46,6 @@ function CreateUpdateModal({
   }
 
   const initialInput = useMemo(() => prepareInput(inputs), [inputs])
-  const [input, setInput] = useState(initialInput)
-  const [tagName, setTagName] = useState('type first then enter!');
-  const [selectedTag, setSelectedTag] = useState(null)
-  const [selectedAddTag, setSelectedAddTag] = useState(null)
 
   const filter = createFilterOptions()
   const methods = useForm()
@@ -150,7 +144,6 @@ function CreateUpdateModal({
             name,
             type,
             placeholder,
-            defaultValue,
             selectOptions,
             validation,
           }, index) => {
@@ -227,11 +220,27 @@ function CreateUpdateModal({
                               if (isEndOfScroll) handleScrollAutocomplete()
                             }
                           }}
+                          componentsProps={{
+                            paper: {
+                              sx: {
+                                width: '100%'
+                              }
+                            }
+                          }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label={label}
                               placeholder={placeholder}
+                              InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                  <>
+                                    {autocompleteListLoading ? <StyledCircularProgress color='inherit' size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                  </>
+                                ),
+                              }}
                             />
                           )}
                         />

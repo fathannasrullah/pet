@@ -37,6 +37,7 @@ function ListTableView({
   btnText,
   details,
   detailLoading,
+  autocompleteListLoading,
   createDataLoading,
   createDataSuccess,
   updateDataLoading,
@@ -177,6 +178,7 @@ function ListTableView({
           actionType={actionType}
           open={openCreateUpdateModal}
           detailLoading={detailLoading}
+          autocompleteListLoading={autocompleteListLoading}
           createDataLoading={createDataLoading}
           createDataSuccess={createDataSuccess}
           updateDataLoading={updateDataLoading}

@@ -19,6 +19,7 @@ import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCrea
 function Post() {
   const dispatch = useDispatch()
   const { requestStatus } = useSelector(state => state[STORE_NAME.POST])
+  const { requestStatus: requestStatusSecondary } = useSelector((state) => state[STORE_NAME.USER])
 
   const [selectedData, setSelectedData] = useState(null)
   const [openImagePreview, setOpenImagePreview] = useState(false)
@@ -27,6 +28,7 @@ function Post() {
   const [title, setTitle] = useState('add new post')
   const [actionType, setActionType] = useState('create')
 
+  const autocompleteListLoading = requestStatusSecondary === REQUEST_STATUS.USER_LIST_PENDING
   const createPostLoading = requestStatus === REQUEST_STATUS.POST_CREATE_PENDING
   const createPostSuccess = requestStatus === REQUEST_STATUS.POST_CREATE_SUCCESS
   const updatePostLoading = requestStatus === REQUEST_STATUS.POST_UPDATE_PENDING
@@ -91,6 +93,7 @@ function Post() {
         title={title}
         actionType={actionType}
         details={selectedData}
+        autocompleteListLoading={autocompleteListLoading}
         createDataLoading={createPostLoading}
         createDataSuccess={createPostSuccess}
         updateDataLoading={updatePostLoading}
