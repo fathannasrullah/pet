@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   List,
   ListItem,
@@ -10,12 +9,14 @@ import { navigation } from '../../utils/navigation'
 import { StyledDrawerPermanent, StyledDrawerTemporary, StyledListItemButton, StyledNavigation } from './styles'
 
 function Navigation({ handleDrawerToggle, mobileOpen }) {
-  //const currLocation = useLocation()
-  const [menuSelected, setMenuSelected] = useState('')
+  const currLocation = useLocation()
+  let { pathname: currPathname } = currLocation
+  
+  if (currPathname === '/home') currPathname = '/'
+
   const navigate = useNavigate()
   
-  const handleNavigateTo = (pathName, menuName) => {
-    setMenuSelected(menuName)
+  const handleNavigateTo = (pathName) => {
     navigate(pathName)
     mobileOpen == true && handleDrawerToggle()
   }
@@ -27,7 +28,7 @@ function Navigation({ handleDrawerToggle, mobileOpen }) {
           <ListItem key={index} disablePadding>
             <StyledListItemButton
               onClick={() => handleNavigateTo(path, name)}
-              selected={name === menuSelected}
+              selected={path === currPathname}
             >
               <ListItemIcon>
                 <Icon />
