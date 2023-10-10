@@ -1,20 +1,16 @@
-import { useState } from 'react'
+import { lazy, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
 import { isEmpty } from 'lodash'
-
 import { addPost, deletePost, getPostList, getRefreshPostList, updatePost } from '../store/post/action'
 import { getUserList } from '../store/user/action'
-
 import { postTableColumns } from '../utils/table-colums/post-table-columns'
 import { 
   STORE_NAME,
   STATE_NAME,
   REQUEST_STATUS
 } from '../utils/constant'
-
-import ListTableView from '../components/ListTableView'
 import { generateInputCreateUpdatePost } from '../utils/inputs/generateInputCreateUpdatePost'
+const ListTableView = lazy(() => import('../components/ListTableView'))
 
 function Post() {
   const dispatch = useDispatch()

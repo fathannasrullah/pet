@@ -16,7 +16,6 @@ import {
   STATE_NAME,
   REQUEST_STATUS
 } from '../utils/constant'
-//import ListTableView from '../components/ListTableView'
 const ListTableView = lazy(() => import('../components/ListTableView'))
 
 function User() {
