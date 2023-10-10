@@ -146,7 +146,7 @@ function ListGridView({
           />
         </Grid>
         <Grid minHeight='80vh' item xs={12} spacing={2} container>
-          {!listLoading && isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>NO DATA</Typography></Grid>}
+          {!isEmpty(searchValue) && !listLoading && isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>No matches for "{searchValue}"</Typography></Grid>}
           {list.map(({
             id,
             owner,
