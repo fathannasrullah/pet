@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isEmpty } from 'lodash'
 import {
@@ -16,7 +16,8 @@ import {
   STATE_NAME,
   REQUEST_STATUS
 } from '../utils/constant'
-import ListTableView from '../components/ListTableView'
+//import ListTableView from '../components/ListTableView'
+const ListTableView = lazy(() => import('../components/ListTableView'))
 
 function User() {
   const dispatch = useDispatch()

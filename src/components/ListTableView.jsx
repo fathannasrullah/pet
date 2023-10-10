@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Grid } from '@mui/material'
 import Table from '../components/Table/Table'
 import DeleteDataModal from './DeleteDataModal'
-import CreateUpdateModal from './CreateUpdateModal/CreateUpdateModal'
 import ImagePreviewModal from './ImagePreviewModal'
+const CreateUpdateModal = lazy(() => import('./CreateUpdateModal/CreateUpdateModal'))
 
 function ListTableView({
   TableRowCustom,

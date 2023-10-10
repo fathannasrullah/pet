@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { isEmpty } from 'lodash'
@@ -8,7 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { getReadableDate } from '../utils/helpers/format-helper'
 import { limitExcededStr } from '../utils/helpers/string-helper'
 import Search from '../components/Search/Search'
-import CardItem from './CardItem'
+const GridItem = lazy(() => import('../components/GridItem'))
 
 const StyledPagination = styled(Pagination)(() => ({
   '& ul': {
@@ -163,11 +163,11 @@ function ListGridView({
 
             return (
               <Grid item xs={6} md={3} key={id}>
-                <CardItem
+                <GridItem
                   listLoading={listLoading}
                   id={id}
-                  title={fullName}
                   avatar={picture}
+                  title={fullName}
                   subHeader={date}
                   image={image}
                   contentText={contentText}
