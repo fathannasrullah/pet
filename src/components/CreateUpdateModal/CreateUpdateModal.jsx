@@ -22,6 +22,7 @@ function CreateUpdateModal({
   inputs,
   open,
   details,
+  detailLoading,
   autocompleteListLoading,
   createDataLoading,
   createDataSuccess,
@@ -92,7 +93,7 @@ function CreateUpdateModal({
     reset(initialInput)
   }, [reset, initialInput, createDataSuccess, updateDataSuccess])
 
-  if (actionType === 'edit' && isEmpty(details)) {
+  if (actionType === 'edit' && (detailLoading || isEmpty(details))) {
     return (
       <StyledDialog
         open={open}

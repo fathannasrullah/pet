@@ -68,8 +68,8 @@ function User() {
   }
 
   useEffect(() => {
-    !isEmpty(userID) && dispatch(getUserDetail(userID))
-  }, [userID, dispatch])
+    actionType === 'edit' && dispatch(getUserDetail(userID))
+  }, [dispatch, actionType])
 
   return (
     <main>
