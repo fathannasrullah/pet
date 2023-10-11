@@ -40,8 +40,8 @@ function DeleteDataModal({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>no</Button>
-        <Button
+        <Button variant='outlined' onClick={handleClose}>no</Button>
+        <Button variant='contained'
           disabled={deleteDataLoading}
           onClick={handleDeleteData}
         >
