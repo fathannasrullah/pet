@@ -135,6 +135,7 @@ export const creatorUpdateAction = async(
   errorMessage,
   paramsTextPrimary={},
   paramsTextSecondary={},
+  showMessage=true
 ) => {
   try {
     const response = await serviceFunc(bodyDataAction)
@@ -144,22 +145,24 @@ export const creatorUpdateAction = async(
     if (!data) throw({ response })
 
     const responseMessage = messageHelper.getMessageFromResponseData(data)
-    if (!responseMessage) {
-      messageHelper.successMessage(
-        thunkAPI.dispatch,
-        successMessage,
-        successMessage,
-        paramsTextPrimary,
-        paramsTextSecondary,
-      )
-    } else {
-      messageHelper.successMessage(
-        thunkAPI.dispatch,
-        'Success',
-        successMessage,
-        paramsTextPrimary,
-        paramsTextSecondary,
-      )
+    if (showMessage) {
+      if (!responseMessage) {
+        messageHelper.successMessage(
+          thunkAPI.dispatch,
+          successMessage,
+          successMessage,
+          paramsTextPrimary,
+          paramsTextSecondary,
+        )
+      } else {
+        messageHelper.successMessage(
+          thunkAPI.dispatch,
+          'Success',
+          successMessage,
+          paramsTextPrimary,
+          paramsTextSecondary,
+        )
+      }
     }
 
     return thunkAPI.fulfillWithValue(data)
