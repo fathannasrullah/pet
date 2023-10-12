@@ -1,4 +1,4 @@
-import { Modal, Box, Stack, Button, IconButton } from '@mui/material'
+import { Modal, Box, Stack, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
 function ImagePreviewModal({ image, open, handleClose }) {
@@ -6,8 +6,8 @@ function ImagePreviewModal({ image, open, handleClose }) {
     <Modal
       open={open}
       onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      aria-labelledby='modal-modal-title'
+      aria-describedby='modal-modal-description'
     >
       <Box sx={{ margin:'auto 0' }}>
         <Stack direction='row' justifyContent='center' mb={5}>

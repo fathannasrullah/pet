@@ -1,16 +1,11 @@
+import { isEmpty } from 'lodash'
 import { IconButton, InputAdornment } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Clear'
-import { isEmpty } from 'lodash'
-import { 
-  StyledForm,
-  StyledInputBase, 
-  StyledSearchContainer, 
-  StyledSearchIconContainer 
-} from './styles'
 import HideOnScroll from '../HideOnScroll'
+import { StyledForm, StyledInputBase, StyledSearchContainer, StyledSearchIconContainer } from './styles'
 
-const Search = (props) => {
+function Search(props) {
   const { searchValue, onSearchChange } = props
 
   const handleKeyDown = (event) => {

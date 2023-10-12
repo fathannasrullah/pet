@@ -10,13 +10,10 @@ import {
   Grid,
   Typography
 } from '@mui/material'
-
 import { isEmpty } from 'lodash'
-
-import TableRowPrimary from './TableRowPrimary'
-
-import { StyledTableContainer } from './styles'
 import InitialLoading from '../IntialLoading'
+import TableRowPrimary from './TableRowPrimary'
+import { StyledTableContainer } from './styles'
 
 function Table({
   TableRowCustom = TableRowPrimary,
@@ -34,7 +31,7 @@ function Table({
   handleOpenImagePreviewModal,
   handleOpenDeleteModal,
   handleOpenCreateUpdateModal,
-  handleSetTitleAndActionType,
+  handleSetTitleAndActionType
 }) {
   return (
     <Card>
@@ -70,7 +67,6 @@ function Table({
                     handleOpenDeleteModal={handleOpenDeleteModal}
                     handleOpenCreateUpdateModal={handleOpenCreateUpdateModal}
                     handleSetTitleAndActionType={handleSetTitleAndActionType}
-                    
                   />
                 )
               })}
@@ -78,7 +74,7 @@ function Table({
           </MUITable>
           {listIsLoading && <InitialLoading />}
           {isEmpty(rows) && !listIsLoading &&
-            <Grid container justifyContent='center' alignItems='center' sx={{ height: '50vh' }}>
+            <Grid justifyContent='center' alignItems='center' sx={{ height: '50vh' }} container>
               <Typography>Data not found!</Typography>
             </Grid>
           }
@@ -90,12 +86,8 @@ function Table({
           rowsPerPage={rowsPerPage}
           page={page || 0}
           onPageChange={onPageChange}
-          SelectProps={{
-            disabled: listIsLoading
-          }}
-          nextIconButtonProps={
-            listIsLoading ? { disabled: listIsLoading } : undefined
-          }
+          SelectProps={{ disabled: listIsLoading }}
+          nextIconButtonProps={listIsLoading ? { disabled: listIsLoading } : undefined}
         />
       </Paper>
     </Card>

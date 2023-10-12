@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { IconButton } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { currencyFormat } from '../utils/helpers/format-helper'
 import { motion } from 'framer-motion'
+import { currencyFormat } from '../utils/helpers/format-helper'
 
 function Likes({ id, likes }) {
   const [isLikes, setIsLikes] = useState(false)

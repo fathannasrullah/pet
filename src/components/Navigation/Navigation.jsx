@@ -1,10 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from '@mui/material'
+import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import { navigation } from '../../utils/navigation'
 import { StyledDrawerPermanent, StyledDrawerTemporary, StyledListItemButton, StyledNavigation } from './styles'
 

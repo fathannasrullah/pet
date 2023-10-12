@@ -1,5 +1,5 @@
-import { Alert, AlertTitle, Snackbar } from '@mui/material'
 import { useState } from 'react'
+import { Alert, AlertTitle, Snackbar } from '@mui/material'
 
 function MessageSnackbar({
   openMessage,

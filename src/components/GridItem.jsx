@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Chip, Skeleton, Stack, Typography, styled } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import Likes from "./Likes"
+import Likes from './Likes'
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   '& p': {

@@ -1,8 +1,13 @@
 import { Skeleton, TableCell, TableRow } from '@mui/material'
-
 import { limitExcededStr } from '../../utils/helpers/string-helper'
-import { StyledActionContainer, StyledButton, StyledChip, StyledChipContainer, StyledImageContainer } from './styles'
 import { postAction } from '../../utils/actions/post-actions'
+import {
+  StyledActionContainer,
+  StyledButton,
+  StyledChip,
+  StyledChipContainer,
+  StyledImageContainer
+} from './styles'
 
 function TableRowPrimary({
   row,
@@ -13,7 +18,7 @@ function TableRowPrimary({
   handleOpenImagePreviewModal,
   handleGetDataSelected,
   handleOpenCreateUpdateModal,
-  handleSetTitleAndActionType,
+  handleSetTitleAndActionType
 }) {
   const handleActionClick = (event) => {
     const { name, value } = event.currentTarget
@@ -37,7 +42,6 @@ function TableRowPrimary({
       hover
       role='checkbox'
       tabIndex={-1}
-      //onClick={viewDetail ? () => handleRowClick(`${basePath}/${row.id}`) : null}
     >
       {columns.map(({ name, align }, index) => {
         let value = row[name]
@@ -82,10 +86,7 @@ function TableRowPrimary({
         }
 
         return (
-          <TableCell
-            key={index}
-            align={align}
-          >
+          <TableCell key={index} align={align}>
             {listIsLoading ? (
               <Skeleton variant='rectangular' width='100%' />
             ) : (

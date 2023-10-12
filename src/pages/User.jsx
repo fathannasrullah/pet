@@ -11,11 +11,8 @@ import {
 } from '../store/user/action'
 import { generateInputCreateUpdateUser } from '../utils/inputs/generateInputCreateUpdateUser'
 import { userTableColumns } from '../utils/table-colums/user-table-columns'
-import { 
-  STORE_NAME,
-  STATE_NAME,
-  REQUEST_STATUS
-} from '../utils/constant'
+import { STORE_NAME, STATE_NAME, REQUEST_STATUS } from '../utils/constant'
+
 const ListTableView = lazy(() => import('../components/ListTableView'))
 
 function User() {
@@ -48,27 +45,23 @@ function User() {
   const handleCloseDeleteUser = () => setOpenDeleteUser(false)
   const handleGetDataSelected = (data) => setSelectedData(JSON.parse(data))
   const handleDeleteUser = () => dispatch(deleteUser(selectedData.id))
+  
   const handleSetTitleAndActionType = (title, actionType) => {
     setTitle(title)
     setActionType(actionType)
   }
-  const handleOpenCreateUpdateUser = () => {
-    setOpenCreateUpdateUser(true)
-  }
+  
+  const handleOpenCreateUpdateUser = () => setOpenCreateUpdateUser(true)
   const handleCloseCreateUpdateUser = () => {
     if (actionType === 'edit') handleSetTitleAndActionType('add new user', 'create')
 
     setOpenCreateUpdateUser(false)
   }
-  const handleSubmit = (data) => {
-    console.log('data submitted: ', data)
-    dispatch(
-      actionType === 'create' ? addUser(data) : updateUser(data)
-    )
-  }
+
+  const handleSubmit = (data) => dispatch(actionType === 'create' ? addUser(data) : updateUser(data))
 
   useEffect(() => {
-    actionType === 'edit' && dispatch(getUserDetail(userID))
+    if (actionType === 'edit') dispatch(getUserDetail(userID))
   }, [dispatch, actionType])
 
   return (

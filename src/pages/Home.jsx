@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import { getHomeList, getSearchPostByTag } from '../store/post/action'
 import { REQUEST_STATUS, STATE_NAME, STORE_NAME } from '../utils/constant'
+
 const ListGridView = lazy(() => import('../components/ListGridView'))
 
 function Home() {

@@ -17,7 +17,7 @@ function App() {
     isShowMessage,
     variant,
     primaryText,
-    secondaryText,
+    secondaryText
   } = useSelector((state) => state[STORE_NAME.MESSAGE])
 
   const handleCloseMessage = () => dispatch(clearMessage())

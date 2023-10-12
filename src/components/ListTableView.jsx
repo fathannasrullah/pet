@@ -1,9 +1,10 @@
 import { lazy, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Grid } from '@mui/material'
-import Table from '../components/Table/Table'
+import Table from './Table/Table'
 import DeleteDataModal from './DeleteDataModal'
 import ImagePreviewModal from './ImagePreviewModal'
+
 const CreateUpdateModal = lazy(() => import('./CreateUpdateModal/CreateUpdateModal'))
 
 function ListTableView({
@@ -25,6 +26,8 @@ function ListTableView({
   source,
   openDeleteModal,
   selectedData,
+  deleteDataLoading,
+  deleteDataSuccess,
   handleGetDataSelected,
   handleOpenDeleteModal,
   handleCloseDeleteModal,
@@ -42,8 +45,6 @@ function ListTableView({
   createDataSuccess,
   updateDataLoading,
   updateDataSuccess,
-  deleteDataLoading,
-  deleteDataSuccess,
   storeNameForAutocomplate,
   stateNameForAutocomplete,
   getAutocompleteList,
@@ -122,10 +123,7 @@ function ListTableView({
     <>
       <Grid spacing={2} container>
         <Grid item xs={12} justifyContent='center' container>
-          <Button
-            variant='contained'
-            onClick={handleOpenCreateUpdateModal}
-          >
+          <Button variant='contained' onClick={handleOpenCreateUpdateModal}>
             {addButtonLabel}
           </Button>
         </Grid>

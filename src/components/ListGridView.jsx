@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { getReadableDate } from '../utils/helpers/format-helper'
 import { limitExcededStr } from '../utils/helpers/string-helper'
 import Search from '../components/Search/Search'
+
 const GridItem = lazy(() => import('../components/GridItem'))
 
 const StyledPagination = styled(Pagination)(() => ({
@@ -85,7 +86,6 @@ function ListGridView({
       setTimeout(() => {
         setPage(1)
         navigate('/')
-
         handleFetchDataType('search')
       }, 500)
     )
@@ -93,9 +93,9 @@ function ListGridView({
 
   const handlePageChange = (event, value) => {
     event.preventDefault()
+
     setPage(value)
     handleFetchDataType('page-change')
-
     navigateWithParams('/home', { page: value })
   }
 
@@ -146,7 +146,6 @@ function ListGridView({
           />
         </Grid>
         <Grid minHeight='80vh' item xs={12} spacing={2} container>
-          {!isEmpty(searchValue) && !listLoading && isEmpty(list) && <Grid mt={20} justifyContent='center' container><Typography>No matches for "{searchValue}"</Typography></Grid>}
           {list.map(({
             id,
             owner,
@@ -177,6 +176,10 @@ function ListGridView({
               </Grid>
             )
           })}
+  
+          <Grid mt={20} justifyContent='center' container>
+            {!isEmpty(searchValue) && !listLoading && isEmpty(list) && <Typography>No matches for "{searchValue}"</Typography>}
+          </Grid>
         </Grid>
         <Grid item xs={12} justifyContent='center' container>
           <Stack overflow='auto' margin='10px 0'>
