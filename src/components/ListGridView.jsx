@@ -159,6 +159,14 @@ function ListGridView({
             const fullName = limitExcededStr(`${firstName} ${lastName}`, 8)
             const date = getReadableDate(publishDate, 'en')
             const contentText = limitExcededStr(text, 33)
+            const submittedData = {
+              id,
+              owner: owner.id,
+              text,
+              likes,
+              image,
+              tags
+            }
 
             return (
               <Grid item xs={6} md={3} key={id}>
@@ -172,6 +180,7 @@ function ListGridView({
                   contentText={contentText}
                   tags={tags}
                   likes={likes}
+                  submittedData={submittedData}
                 />
               </Grid>
             )

@@ -22,7 +22,8 @@ function GridItem({
   image,
   contentText,
   tags,
-  likes
+  likes,
+  submittedData
 }) {
   return (
     <Card sx={{ minHeight: 400, maxWidth: 345 }}>
@@ -69,6 +70,7 @@ function GridItem({
           <Likes
             id={id}
             likes={likes}
+            submittedData={submittedData}
           />
         </CardActions>
       )}

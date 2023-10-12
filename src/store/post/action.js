@@ -92,6 +92,22 @@ export const updatePost = createAsyncThunk(
   }
 )
 
+export const updatePostAtHome = createAsyncThunk(
+  'post/update-at-home',
+  async (updateBody, thunkAPI) => {
+    return (
+      await creatorUpdateAction(
+        thunkAPI,
+        updateBody,
+        updatePostService,
+        '', '',
+        {}, {},
+        false
+      )
+    )
+  }
+)
+
 export const deletePost = createAsyncThunk(
   'post/delete',
   async (deleteParams, thunkAPI) => {
