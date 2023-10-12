@@ -177,9 +177,11 @@ function ListGridView({
             )
           })}
   
-          <Grid mt={20} justifyContent='center' container>
-            {!isEmpty(searchValue) && !listLoading && isEmpty(list) && <Typography>No matches for "{searchValue}"</Typography>}
-          </Grid>
+          {!isEmpty(searchValue) && !listLoading && isEmpty(list) && 
+            <Grid mt={20} justifyContent='center' container>
+              <Typography>No matches for "{searchValue}"</Typography>
+            </Grid>
+          }
         </Grid>
         <Grid item xs={12} justifyContent='center' container>
           <Stack overflow='auto' margin='10px 0'>
