@@ -107,23 +107,18 @@ function ListGridView({
 
     if (fetchType.name === 'search' && !isEmpty(searchValue)) dispatch(onFetchSearch(searchValue))
 
-    if ((fetchType.name === 'page-change' && page > 0) ||
-      (fetchType.name === 'initial' && page > 0) ||
-      (fetchType.name === 'search' && !isEmpty(list))) {
+    if ((fetchType.name === 'page-change' && page > 0) || (fetchType.name === 'initial' && page > 0)) {
       dispatch(isEmpty(searchValue)
-        ? onFetchList({
-          ...param,
-          page: page
-          })
+        ? onFetchList({ ...param, page: page })
         : onFetchSearch({
-          ...param,
-          inputValue: searchValue,
-          page: page
+            ...param,
+            inputValue: searchValue,
+            page: page
           })
       )
     }
 
-    if ((fetchType.name === 'initial' && page == 1) || (fetchType.name === 'search' && isEmpty(searchValue)) ) dispatch(onFetchList({ ...param }))
+    if ((fetchType.name === 'initial' && page == 1) || (fetchType.name === 'search' && isEmpty(searchValue))) dispatch(onFetchList({ ...param }))
   }, [fetchType, page, searchValue])
 
   useEffect(() => {
