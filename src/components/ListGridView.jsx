@@ -8,6 +8,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { getReadableDate } from '../utils/helpers/format-helper'
 import { limitExcededStr } from '../utils/helpers/string-helper'
 import Search from '../components/Search/Search'
+import { useStorageState } from '../hooks/useStorageState'
 
 const GridItem = lazy(() => import('../components/GridItem'))
 
@@ -63,7 +64,7 @@ function ListGridView({
 
   const [fetchType, setFetchType] = useState({ name: 'initial' })
   const [page, setPage] = useState(parseInt(query.get('page') || '1'))
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useStorageState('search', '')
   const [searchTimeout, setSearchTimeout] = useState(null)
  
   const handleFetchDataType = (type) => {
@@ -108,7 +109,7 @@ function ListGridView({
 
     if (fetchType.name === 'search') dispatch(onFetchSearch(searchValue))
 
-    if ((fetchType.name === 'page-change' && page > 0) || (fetchType.name === 'initial' && page > 0)) {
+    if ((fetchType.name === 'page-change' && page > 0)) {
       dispatch(isEmpty(searchValue)
         ? onFetchList({ ...param, page: page })
         : onFetchSearch({
@@ -119,7 +120,19 @@ function ListGridView({
       )
     }
 
-    if ((fetchType.name === 'initial' && page == 1)) dispatch(onFetchList({ ...param }))
+    if ((fetchType.name === 'initial')) {
+      dispatch(isEmpty(searchValue)
+        ? onFetchList({
+            ...param,
+            page: page == 1 ? 1 : page
+          })
+        : onFetchSearch({
+            ...param,
+            inputValue: searchValue,
+            page: page == 1 ? 0 : page
+          })
+      )
+    }
   }, [fetchType, page])
 
   useEffect(() => {
@@ -131,8 +144,10 @@ function ListGridView({
     
     handleFetchList()
   }, [handleFetchList])
-
-  console.log('search :', searchValue)
+  console.log('page :', page)
+  console.log('fetch type ', fetchType.name)
+  console.log('searchVakue :', searchValue)
+  console.log('list :', list)
 
   return (
     <>
@@ -184,7 +199,7 @@ function ListGridView({
             )
           })}
   
-          {!isEmpty(searchValue) && !listLoading && isEmpty(list) && 
+          {!isEmpty(searchValue) && isEmpty(list) && 
             <Grid mt={20} justifyContent='center' container>
               <Typography>No matches for "{searchValue}"</Typography>
             </Grid>
