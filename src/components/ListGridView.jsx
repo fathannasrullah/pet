@@ -74,19 +74,20 @@ function ListGridView({
   }
 
   const handleSearchChange = (event, emptyValue) => {
+    const { value } = event.target
     clearTimeout(searchTimeout)
     
     setSearchValue(
       typeof emptyValue === 'string'
         ? emptyValue
-        : event.target.value
+        : value
     )
     // debounce method
     setSearchTimeout(
       setTimeout(() => {
         setPage(1)
         navigate('/')
-        handleFetchDataType('search')
+        !isEmpty(value) ? handleFetchDataType('search') : handleFetchDataType('initial')
       }, 500)
     )
   }
@@ -105,7 +106,7 @@ function ListGridView({
       limit: 20
     }
 
-    if (fetchType.name === 'search' && !isEmpty(searchValue)) dispatch(onFetchSearch(searchValue))
+    if (fetchType.name === 'search') dispatch(onFetchSearch(searchValue))
 
     if ((fetchType.name === 'page-change' && page > 0) || (fetchType.name === 'initial' && page > 0)) {
       dispatch(isEmpty(searchValue)
@@ -118,8 +119,8 @@ function ListGridView({
       )
     }
 
-    if ((fetchType.name === 'initial' && page == 1) || (fetchType.name === 'search' && isEmpty(searchValue))) dispatch(onFetchList({ ...param }))
-  }, [fetchType, page, searchValue])
+    if ((fetchType.name === 'initial' && page == 1)) dispatch(onFetchList({ ...param }))
+  }, [fetchType, page])
 
   useEffect(() => {
     document.documentElement.scrollTo({
@@ -130,6 +131,8 @@ function ListGridView({
     
     handleFetchList()
   }, [handleFetchList])
+
+  console.log('search :', searchValue)
 
   return (
     <>
