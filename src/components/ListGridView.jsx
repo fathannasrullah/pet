@@ -144,10 +144,6 @@ function ListGridView({
     
     handleFetchList()
   }, [handleFetchList])
-  console.log('page :', page)
-  console.log('fetch type ', fetchType.name)
-  console.log('searchVakue :', searchValue)
-  console.log('list :', list)
 
   return (
     <>
